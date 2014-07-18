@@ -3,11 +3,11 @@ var array = require('../../utils/lib/array.utils');
 
 module.exports = {
 	
-	inFolder: function(folder) {
-	
-		var files = fs.readdirSync(folder);
-		var filename = files[0];
-		var content = fs.readFileSync(folder + '/' + filename).toString();
+	inFiles: function(fileProvider) {
+
+		var filenames = fileProvider.files();
+		var filename = filenames[0];
+		var content = fileProvider.contentOf(filename);
 	
 		var lineNumber = 1;
 		var duplicatedLine;
