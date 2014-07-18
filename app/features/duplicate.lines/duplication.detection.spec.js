@@ -1,17 +1,14 @@
 var fs = require('fs');
-var detectDuplicateCodeInFolder = require('./lib/detect.duplicate.code.in.folder');
 var array = require('../utils/lib/array.utils');
+var clean = require('../utils/lib/clean');
+var detectDuplicateCodeInFolder = require('./lib/detect.duplicate.code.in.folder');
 
 describe('Duplication detection', function() {
 
 	var folder = 'test-data';
 	
 	beforeEach(function() {	
-		if (!fs.existsSync(folder)) fs.mkdirSync(folder);
-		var files = fs.readdirSync(folder);
-		array.forEach(files, function(file) {
-			fs.unlinkSync(folder + '/' + file);
-		});
+		clean.folder(folder);		
 	});
 	
 	it('works with one line duplicated in the same file', function() {
