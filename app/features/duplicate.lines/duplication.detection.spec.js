@@ -1,7 +1,7 @@
-var fs = require('fs');
 var array = require('../utils/lib/array.utils');
 var clean = require('../utils/lib/clean');
 var detectDuplicateCodeInFolder = require('./lib/detect.duplicate.code.in.folder');
+var havingInFolder = require('../utils/lib/having.in.folder');
 
 describe('Duplication detection', function() {
 
@@ -12,8 +12,7 @@ describe('Duplication detection', function() {
 	});
 	
 	it('works with one line duplicated in the same file', function() {
-		var content = 'hello world\nhello world';
-		fs.writeFileSync(folder + '/one-file', content);
+		havingInFolder(folder).theFileWithName('one-file').withContent('hello world\nhello world');
 		var duplication = detectDuplicateCodeInFolder(folder);
 		
 		expect(duplication).toEqual({
