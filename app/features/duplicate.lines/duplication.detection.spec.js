@@ -1,4 +1,3 @@
-var array = require('../utils/lib/array.utils');
 var clean = require('../utils/lib/clean');
 var havingInFolder = require('../utils/lib/having.in.folder');
 var duplications = require('./lib/pion');
