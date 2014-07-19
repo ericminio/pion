@@ -1,6 +1,15 @@
-Work in progress...
+Work in progress
 
-## What we have so far...
+Desires:
+* detect duplication of lines
+* detect duplication of blocks of lines
+* from a folder
+* from an online repository
+* compute duplication percentage
+* make it a level in Yose
+
+
+## What we have so far
 
 Install [node.js](http://nodejs.org/) then run from the command line
 
@@ -15,4 +24,5 @@ Check your install: run the test
 npm test
 ```
 
+Read the test of the features
 
