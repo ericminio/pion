@@ -1,7 +1,11 @@
 var array = require('../../utils/lib/array.utils');
 
 var withLine = function(line) {
-	return function(duplication) { return duplication.line == line; }
+	return function(duplication) { 
+		return array.hasOneItemIn(duplication.lines, function(item) { 
+			return item == line; 
+		}); 
+	};
 };
 
 module.exports = function(line) {

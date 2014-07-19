@@ -9,7 +9,7 @@ describe('Pion', function() {
 	var onefile = 'one-file';
 	
 	beforeEach(function() {	
-		clean.folder(folder);		
+		clean.folder(folder);	
 	});
 	
 	it('can detect one line duplicated two times in one file', function() {
@@ -17,7 +17,7 @@ describe('Pion', function() {
 		havingInFolder(folder).theFileWithName(onefile).withContent(content);
 		
 		expect(duplications.inFiles(inFolder(folder))).toEqual([{
-			line: 'first duplication',
+			lines: ['first duplication'],
 			occurences: [
 				{ file: folder+onefile, lineIndex: 1 },
 				{ file: folder+onefile, lineIndex: 2 }
@@ -30,7 +30,7 @@ describe('Pion', function() {
 		havingInFolder(folder).theFileWithName(onefile).withContent(content);
 		
 		expect(duplications.inFiles(inFolder(folder))).toEqual([{
-			line: 'first duplication',
+			lines: ['first duplication'],
 			occurences: [
 				{ file: folder+onefile, lineIndex: 1 },
 				{ file: folder+onefile, lineIndex: 2 },
@@ -47,7 +47,7 @@ describe('Pion', function() {
 		havingInFolder(folder).theFileWithName(secondfile).withContent(content);
 		
 		expect(duplications.inFiles(inFolder(folder))).toEqual([{
-			line: 'first duplication',
+			lines: ['first duplication'],
 			occurences: [
 				{ file: folder+onefile, lineIndex: 0 },
 				{ file: folder+secondfile, lineIndex: 0 }
@@ -64,7 +64,7 @@ describe('Pion', function() {
 		havingInFolder(folder).theFileWithName(thirdfile).withContent(content);
 		
 		expect(duplications.inFiles(inFolder(folder))).toEqual([{
-			line: 'first duplication',
+			lines: ['first duplication'],
 			occurences: [
 				{ file: folder+onefile, lineIndex: 0 },
 				{ file: folder+secondfile, lineIndex: 0 },
@@ -80,14 +80,14 @@ describe('Pion', function() {
 
 		expect(duplications.inFiles(inFolder(folder))).toEqual([
 			{
-				line: 'first item',
+				lines: ['first item'],
 				occurences: [
 					{ file: folder+onefile, lineIndex: 0 },
 					{ file: folder+onefile, lineIndex: 2 }
 				]
 			},
 			{
-				line: 'second item',
+				lines: ['second item'],
 				occurences: [
 					{ file: folder+onefile, lineIndex: 1 },
 					{ file: folder+secondfile, lineIndex: 0 },
@@ -95,7 +95,7 @@ describe('Pion', function() {
 				]
 			},
 			{
-				line: 'third item',
+				lines: ['third item'],
 				occurences: [
 					{ file: folder+secondfile, lineIndex: 1 },
 					{ file: folder+secondfile, lineIndex: 2 },
@@ -104,7 +104,7 @@ describe('Pion', function() {
 				]
 			},
 			{
-				line: 'fourth item',
+				lines: ['fourth item'],
 				occurences: [
 					{ file: folder+thirdfile, lineIndex: 3 },
 					{ file: folder+thirdfile, lineIndex: 4 }

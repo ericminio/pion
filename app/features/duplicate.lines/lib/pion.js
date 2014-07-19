@@ -20,7 +20,7 @@ var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplicatio
 				
 				if (! existingDuplication) {
 					duplications.push({
-						line: leftLine,
+						lines: [leftLine],
 						occurences: [
 							{ file:leftFile, lineIndex: leftIndex },
 							{ file:rightFile, lineIndex: rightIndex}
