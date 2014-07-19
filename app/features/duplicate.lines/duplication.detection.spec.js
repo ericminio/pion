@@ -38,4 +38,21 @@ describe('Pion', function() {
 			]
 		}]);
 	});
+
+	var secondFile = 'secondFile';
+	
+	it('can detect one line duplicated two times in two files', function() {
+		var content = 'first duplication';
+		havingInFolder(folder).theFileWithName(onefile).withContent(content);
+		havingInFolder(folder).theFileWithName(secondFile).withContent(content);
+		
+		expect(duplications.inFiles(inFolder(folder))).toEqual([{
+			line: 'first duplication',
+			occurences: [
+				{ file: folder+onefile, lineIndex: 0 },
+				{ file: folder+secondFile, lineIndex: 0 }
+			]
+		}]);
+	});
+
 });
