@@ -39,20 +39,77 @@ describe('Pion', function() {
 		}]);
 	});
 
-	var secondFile = 'second-file';
+	var secondfile = 'second-file';
 	
 	it('can detect one line duplicated two times in two files', function() {
 		var content = 'first duplication';
 		havingInFolder(folder).theFileWithName(onefile).withContent(content);
-		havingInFolder(folder).theFileWithName(secondFile).withContent(content);
+		havingInFolder(folder).theFileWithName(secondfile).withContent(content);
 		
 		expect(duplications.inFiles(inFolder(folder))).toEqual([{
 			line: 'first duplication',
 			occurences: [
 				{ file: folder+onefile, lineIndex: 0 },
-				{ file: folder+secondFile, lineIndex: 0 }
+				{ file: folder+secondfile, lineIndex: 0 }
 			]
 		}]);
 	});
+	
+	var thirdfile = 'third-file';
 
+	it('can detect one line duplicated three times in three files', function() {
+		var content = 'first duplication';
+		havingInFolder(folder).theFileWithName(onefile).withContent(content);
+		havingInFolder(folder).theFileWithName(secondfile).withContent(content);
+		havingInFolder(folder).theFileWithName(thirdfile).withContent(content);
+		
+		expect(duplications.inFiles(inFolder(folder))).toEqual([{
+			line: 'first duplication',
+			occurences: [
+				{ file: folder+onefile, lineIndex: 0 },
+				{ file: folder+secondfile, lineIndex: 0 },
+				{ file: folder+thirdfile, lineIndex: 0 }
+			]
+		}]);
+	});
+	
+	it('can detect several duplications in several files', function() {
+		havingInFolder(folder).theFileWithName(onefile).withContent('first item\nsecond item\nfirst item');
+		havingInFolder(folder).theFileWithName(secondfile).withContent('second item\nthird item\nthird item');
+		havingInFolder(folder).theFileWithName(thirdfile).withContent('third item\nsecond item\nthird item\nfourth item\nfourth item');
+
+		expect(duplications.inFiles(inFolder(folder))).toEqual([
+			{
+				line: 'first item',
+				occurences: [
+					{ file: folder+onefile, lineIndex: 0 },
+					{ file: folder+onefile, lineIndex: 2 }
+				]
+			},
+			{
+				line: 'second item',
+				occurences: [
+					{ file: folder+onefile, lineIndex: 1 },
+					{ file: folder+secondfile, lineIndex: 0 },
+					{ file: folder+thirdfile, lineIndex: 1 }
+				]
+			},
+			{
+				line: 'third item',
+				occurences: [
+					{ file: folder+secondfile, lineIndex: 1 },
+					{ file: folder+secondfile, lineIndex: 2 },
+					{ file: folder+thirdfile, lineIndex: 0 },
+					{ file: folder+thirdfile, lineIndex: 2 }
+				]
+			},
+			{
+				line: 'fourth item',
+				occurences: [
+					{ file: folder+thirdfile, lineIndex: 3 },
+					{ file: folder+thirdfile, lineIndex: 4 }
+				]
+			},
+		]);
+	});
 });

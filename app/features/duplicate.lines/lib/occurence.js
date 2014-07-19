@@ -1,14 +1,16 @@
 var array = require('../../utils/lib/array.utils');
 
-var withIndex = function(index) {
-	return function(occurence) { return occurence.lineIndex == index; }
+var withIndexInFile = function(filename, index) {
+	return function(occurence) { 
+		return occurence.file == filename && occurence.lineIndex == index; 
+	}
 };
 
-module.exports = function(index) {
+module.exports = function(filename, index) {
 
 	return {
 		in: function(duplication) {
-			return array.firstItemIn(duplication.occurences, withIndex(index));
+			return array.firstItemIn(duplication.occurences, withIndexInFile(filename, index));
 		}
 	};
 };

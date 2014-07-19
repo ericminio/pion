@@ -3,7 +3,8 @@ var occurence = require('./occurence');
 var line = require('./line');
 
 var candidateFound = function (leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex) {
-	return leftLine == rightLine && (leftIndex !== rightIndex || leftFile !== rightFile);
+	return leftLine == rightLine && 
+		(leftIndex !== rightIndex || leftFile !== rightFile);
 };
 
 var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplications) {
@@ -29,7 +30,7 @@ var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplicatio
 				
 				if (existingDuplication) {
 					
-					var existingOccurence = occurence(rightIndex).in(existingDuplication);
+					var existingOccurence = occurence(rightFile, rightIndex).in(existingDuplication);
 					
 					if (! existingOccurence) {
 						existingDuplication.occurences.push({ file:rightFile, lineIndex: rightIndex});
