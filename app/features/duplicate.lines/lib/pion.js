@@ -6,25 +6,38 @@ module.exports = {
 	inFiles: function(fileProvider) {
 
 		var filenames = fileProvider.files();
+		
 		var filename = filenames[0];
 		var content = fileProvider.contentOf(filename);
-	
-		var lineNumber = 1;
-		var duplicatedLine;
 		var lines = content.split('\n');
-		var firstLine = lines[0];
-	
-		array.forEach(lines, function(line, index) {
-			if (line == firstLine && index !== 0 ) {
-				duplicatedLine = index + 1;
-			}
+		
+		var contain = function(line, duplications) {
+			var found = false;
+			array.forEach(duplications, function(duplication) {
+				if (duplication.line == line) {
+					found = true;
+					return;
+				}
+			});
+			return found;
+		};
+
+		var duplications = [];
+		array.forEach(lines, function(left, leftIndex) {
+			array.forEach(lines, function(right, rightIndex) {
+				if (left == right && leftIndex !== rightIndex && ! contain(left, duplications) ) {
+					duplications.push({
+						line: left,
+						occurences: [
+							{ file:filename, lineIndex: leftIndex },
+							{ file:filename, lineIndex: rightIndex}
+						]
+					});
+				}
+			});
 		});
 	
-		return [{
-			line: firstLine,
-			left:  { file: filename, line: lineNumber },
-			right: { file: filename, line: duplicatedLine }
-		}];
+		return duplications;
 	}
 };
 
