@@ -2,6 +2,10 @@ var array = require('../../utils/lib/array.utils');
 var occurence = require('./occurence');
 var line = require('./line');
 
+var candidateFound = function (leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex) {
+	return leftLine == rightLine && leftIndex !== rightIndex;
+};
+
 var duplications = function(leftFile, rightFile, fileProvider) {
 	var duplications = [];
 	var leftLines = fileProvider.contentOf(leftFile).split('\n');
@@ -10,10 +14,11 @@ var duplications = function(leftFile, rightFile, fileProvider) {
 	array.forEach(leftLines, function(leftLine, leftIndex) {
 		array.forEach(rightLines, function(rightLine, rightIndex) {
 
-			if (leftLine == rightLine && leftIndex !== rightIndex) {
+			if (candidateFound(leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex)) {
 				
-				var duplication = line(leftLine).in(duplications);
-				if (! duplication) {
+				var existingDuplication = line(leftLine).in(duplications);
+				
+				if (! existingDuplication) {
 					duplications.push({
 						line: leftLine,
 						occurences: [
@@ -21,9 +26,14 @@ var duplications = function(leftFile, rightFile, fileProvider) {
 							{ file:rightFile, lineIndex: rightIndex}
 						]
 					});
-				} else {
-					if (! occurence(rightIndex).in(duplication)) {
-						duplication.occurences.push({ file:rightFile, lineIndex: rightIndex});
+				} 
+				
+				if (existingDuplication) {
+					
+					var existingOccurence = occurence(rightIndex).in(existingDuplication);
+					
+					if (! existingOccurence) {
+						existingDuplication.occurences.push({ file:rightFile, lineIndex: rightIndex});
 					}
 				}
 			}
