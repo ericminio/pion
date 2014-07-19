@@ -3,11 +3,10 @@ var occurence = require('./occurence');
 var line = require('./line');
 
 var candidateFound = function (leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex) {
-	return leftLine == rightLine && leftIndex !== rightIndex;
+	return leftLine == rightLine && (leftIndex !== rightIndex || leftFile !== rightFile);
 };
 
-var duplications = function(leftFile, rightFile, fileProvider) {
-	var duplications = [];
+var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplications) {
 	var leftLines = fileProvider.contentOf(leftFile).split('\n');
 	var rightLines = fileProvider.contentOf(rightFile).split('\n');		
 
@@ -48,7 +47,14 @@ module.exports = {
 	inFiles: function(fileProvider) {
 		var filenames = fileProvider.files();
 		
-		return duplications(filenames[0], filenames[0], fileProvider);
+		var duplications = [];
+		array.forEach(filenames, function(leftFile) {
+			array.forEach(filenames, function(rightFile) {
+				duplicationsInFiles(leftFile, rightFile, fileProvider, duplications);
+			});
+		});
+		
+		return duplications;
 	}
 };
 

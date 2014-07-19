@@ -39,7 +39,7 @@ describe('Pion', function() {
 		}]);
 	});
 
-	var secondFile = 'secondFile';
+	var secondFile = 'second-file';
 	
 	it('can detect one line duplicated two times in two files', function() {
 		var content = 'first duplication';
