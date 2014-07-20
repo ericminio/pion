@@ -1,3 +1,5 @@
+[![Travis Build Status](https://travis-ci.org/ericminio/pion.png?branch=master)](https://travis-ci.org/ericminio/pion)
+
 Work in progress
 
 Desires:
