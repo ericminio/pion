@@ -7,15 +7,15 @@ describe('Merger', function() {
 			{
 				lines: ['first item'],
 				occurences: [
-					{ file: 'any', lineIndex: 0 },
-					{ file: 'any', lineIndex: 2 }
+					{ file: 'love', lineIndex: 0 },
+					{ file: 'love', lineIndex: 2 }
 				]
 			},
 			{
 				lines: ['second item'],
 				occurences: [
-					{ file: 'any', lineIndex: 1 },
-					{ file: 'any', lineIndex: 3 }
+					{ file: 'love', lineIndex: 1 },
+					{ file: 'love', lineIndex: 3 }
 				]
 			}
 		]);
@@ -23,8 +23,8 @@ describe('Merger', function() {
 		expect(duplications).toEqual([{
 			lines: ['first item', 'second item'],
 			occurences: [
-				{ file: 'any', lineIndex: 0 },
-				{ file: 'any', lineIndex: 2 }
+				{ file: 'love', lineIndex: 0 },
+				{ file: 'love', lineIndex: 2 }
 			]
 		}]);
 	});
