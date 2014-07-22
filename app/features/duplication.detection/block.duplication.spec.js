@@ -1,6 +1,6 @@
 var clean = require('../utils/lib/clean');
 var havingInFolder = require('../utils/lib/having.in.folder');
-var duplications = require('./lib/pion');
+var blockDuplications = require('./lib/pion.blocks');
 var inFolder = require('../utils/lib/directory.file.provider');
 
 describe('Pion', function() {
@@ -16,7 +16,7 @@ describe('Pion', function() {
 		var content = 'first item\nsecond item\nfirst item\nsecond item';
 		havingInFolder(folder).theFileWithName(onefile).withContent(content);
 		
-		expect(duplications.inFiles(inFolder(folder))).toEqual([{
+		expect(blockDuplications.inFiles(inFolder(folder))).toEqual([{
 			lines: ['first item', 'second item'],
 			occurences: [
 				{ file: folder+onefile, lineIndex: 0 },

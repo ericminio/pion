@@ -1,6 +1,6 @@
 var clean = require('../utils/lib/clean');
 var havingInFolder = require('../utils/lib/having.in.folder');
-var duplications = require('./lib/pion');
+var duplications = require('./lib/pion.lines');
 var inFolder = require('../utils/lib/directory.file.provider');
 
 describe('Pion', function() {
