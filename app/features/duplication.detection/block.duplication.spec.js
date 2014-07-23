@@ -1,5 +1,6 @@
 var blockDuplications = require('./lib/pion.blocks');
 var oneFile = require('../utils/lib/one.file.provider');
+var files = require('../utils/lib/files.provider');
 
 describe('Pion', function() {
 
@@ -38,4 +39,18 @@ describe('Pion', function() {
  		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual(expected);
 	});
 	
+	it('can detect a duplicated block of two lines in two file', function() {
+        var contents = [
+            'first item\nsecond item\n',
+		    'first item\nsecond item'
+		];
+					  
+		expect(blockDuplications.inFiles(files(['a', 'b']).withContents(contents))).toEqual([{
+			lines: ['first item', 'second item'],
+			occurences: [
+				{ file: 'a', lineIndex: 0 },
+				{ file: 'b', lineIndex: 0 }
+			]
+		}]);
+	});
 });
