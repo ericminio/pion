@@ -2,6 +2,7 @@ var clean = require('../utils/lib/clean');
 var havingInFolder = require('../utils/lib/having.in.folder');
 var duplications = require('./lib/pion.lines');
 var inFolder = require('../utils/lib/directory.file.provider');
+var oneFile = require('../utils/lib/one.file.provider');
 
 describe('Pion', function() {
 
@@ -14,27 +15,25 @@ describe('Pion', function() {
 	
 	it('can detect one line duplicated two times in one file', function() {
 		var content = 'first line\nfirst duplication\nfirst duplication';
-		havingInFolder(folder).theFileWithName(onefile).withContent(content);
 		
-		expect(duplications.inFiles(inFolder(folder))).toEqual([{
+		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
 			lines: ['first duplication'],
 			occurences: [
-				{ file: folder+onefile, lineIndex: 1 },
-				{ file: folder+onefile, lineIndex: 2 }
+				{ file: onefile, lineIndex: 1 },
+				{ file: onefile, lineIndex: 2 }
 			]
 		}]);
 	});
 
 	it('can detect one line duplicated three times in one file', function() {
 		var content = 'first line\nfirst duplication\nfirst duplication\nfirst duplication';
-		havingInFolder(folder).theFileWithName(onefile).withContent(content);
 		
-		expect(duplications.inFiles(inFolder(folder))).toEqual([{
+		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
 			lines: ['first duplication'],
 			occurences: [
-				{ file: folder+onefile, lineIndex: 1 },
-				{ file: folder+onefile, lineIndex: 2 },
-				{ file: folder+onefile, lineIndex: 3 }
+				{ file: onefile, lineIndex: 1 },
+				{ file: onefile, lineIndex: 2 },
+				{ file: onefile, lineIndex: 3 }
 			]
 		}]);
 	});
