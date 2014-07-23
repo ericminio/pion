@@ -17,7 +17,7 @@ describe('Pion', function() {
 			]
 		}]);
 	});
-
+	
 	it('can detect one line duplicated three times in one file', function() {
 		var content = 'first line\nfirst duplication\nfirst duplication\nfirst duplication';
 		
@@ -100,5 +100,12 @@ describe('Pion', function() {
 				]
 			},
 		]);
+	});
+
+	it('ignores empty lines', function() {
+		var content = '\n' +
+					  '\n';
+		
+		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([]);
 	});
 });
