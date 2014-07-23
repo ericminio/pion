@@ -17,7 +17,8 @@ module.exports = {
 					var candidates = [];
 					array.forEach(left.occurences, function(leftOccurence, leftIndex) {
 						var rightOccurence = right.occurences[leftIndex];
-						var condition = leftOccurence.file == rightOccurence.file &&
+						var condition = rightOccurence !== undefined &&
+						                leftOccurence.file == rightOccurence.file &&
 										leftOccurence.lineIndex == rightOccurence.lineIndex-1;
 						
 						if (condition) {
@@ -27,7 +28,7 @@ module.exports = {
 					if (candidates.length > 1) {
 						duplicatedBlocks.push({
 							lines: left.lines.concat(right.lines),
-							occurences: candidates//
+							occurences: candidates
 						})
 					}
 				}

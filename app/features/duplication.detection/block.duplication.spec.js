@@ -39,6 +39,19 @@ describe('Pion', function() {
 				{ file: folder+onefile, lineIndex: 2 }
 			]
 		}]);
+		
+        var content = 'first item\nsecond item\n' +
+                      'first item\nsecond item\n' +
+                      'second item';
+		havingInFolder(folder).theFileWithName(onefile).withContent(content);
+		
+		expect(blockDuplications.inFiles(inFolder(folder))).toEqual([{
+			lines: ['first item', 'second item'],
+			occurences: [
+				{ file: folder+onefile, lineIndex: 0 },
+				{ file: folder+onefile, lineIndex: 2 }
+			]
+		}]);
 	});
 	
 });
