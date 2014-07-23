@@ -12,8 +12,24 @@ describe('Pion', function() {
 		clean.folder(folder);	
 	});
 	
-	it('can detect a duplicated block in one file', function() {
-		var content = 'first item\nsecond item\nfirst item\nsecond item';
+	it('can detect a duplicated block of two lines in one file', function() {
+        var content = 'first item\nsecond item\n' +
+                      'first item\nsecond item';
+		havingInFolder(folder).theFileWithName(onefile).withContent(content);
+		
+		expect(blockDuplications.inFiles(inFolder(folder))).toEqual([{
+			lines: ['first item', 'second item'],
+			occurences: [
+				{ file: folder+onefile, lineIndex: 0 },
+				{ file: folder+onefile, lineIndex: 2 }
+			]
+		}]);
+	});
+	
+	it('supports a block almost duplicated three times', function() {
+        var content = 'first item\nsecond item\n' +
+                      'first item\nsecond item\n' +
+                      'first item';
 		havingInFolder(folder).theFileWithName(onefile).withContent(content);
 		
 		expect(blockDuplications.inFiles(inFolder(folder))).toEqual([{
