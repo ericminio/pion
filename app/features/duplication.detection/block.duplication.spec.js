@@ -58,14 +58,16 @@ describe('Pion', function() {
 		var fileProvider = files(['a', 'b', 'c']).withContents([
 				'block 1 - line 1\n' +
 				'block 1 - line 2\n' +
-				'anything\n' +
+				'hello\n' +
+				'world\n' +
 				'block 1 - line 1\n' +
 				'block 1 - line 2',
 				
 				'block 1 - line 1\n' +
 				'block 1 - line 2',
 				
-				'anything\n' +
+				'hello\n' +
+				'world\n' +
 				'block 1 - line 1\n' +
 				'block 1 - line 2',				
 			]);
@@ -75,14 +77,14 @@ describe('Pion', function() {
 				lines: ['block 1 - line 1', 'block 1 - line 2'],
 				occurences: [
 					{ file: 'a', lineIndex: 0 },
-					{ file: 'a', lineIndex: 3 },
+					{ file: 'a', lineIndex: 4 },
 					{ file: 'b', lineIndex: 0 },
-					{ file: 'c', lineIndex: 1 }
+					{ file: 'c', lineIndex: 2 }
 				]
 			},
 			{
-				lines: ['anything'],
-				occurence: [
+				lines: ['hello', 'world'],
+				occurences: [
 					{ file: 'a', lineIndex: 2 },
 					{ file: 'c', lineIndex: 0 }
 				]
