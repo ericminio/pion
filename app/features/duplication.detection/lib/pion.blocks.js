@@ -12,7 +12,6 @@ module.exports = {
 		array.forEach(duplicatedLines, function(left) {
 			array.forEach(duplicatedLines, function(right) {
 				if (left != right) {
-					log(left.lines + ' ' + right.lines);
 					
 					var candidates = [];
 					array.forEach(left.occurences, function(leftOccurence, leftIndex) {
