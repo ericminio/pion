@@ -102,9 +102,11 @@ describe('Pion', function() {
 		]);
 	});
 
-	it('ignores empty lines', function() {
+	it('ignores empty lines and blanck lines', function() {
 		var content = '\n' +
-					  '\n';
+					  '\n' +
+					  '    \n' +
+					  '    \n';
 		
 		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([]);
 	});
