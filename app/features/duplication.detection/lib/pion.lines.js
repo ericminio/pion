@@ -1,9 +1,12 @@
 var array = require('../../utils/lib/array.utils');
 var occurence = require('./occurence');
 var line = require('./line');
+var isString = require('../../utils/lib/string.utils');
 
 var candidateFound = function (leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex) {
-	return leftLine == rightLine && 
+	return !isString.empty(leftLine) && !isString.blanck(leftLine) &&
+		   !isString.empty(rightLine) && !isString.blanck(rightLine) &&
+	 	leftLine == rightLine && 
 		(leftIndex !== rightIndex || leftFile !== rightFile);
 };
 
