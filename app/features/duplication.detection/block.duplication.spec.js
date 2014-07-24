@@ -91,4 +91,20 @@ describe('Pion', function() {
 			}
 		]);
 	});
+	
+	it('ignores empty lines in blocks', function() {
+        var content = 'first item\n' +
+		              'second item\n' +
+                      'first item\n' +
+					  '\n' +
+					  'second item';		
+					  
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
+			lines: ['first item', 'second item'],
+			occurences: [
+				{ file: onefile, lineIndex: 0 },
+				{ file: onefile, lineIndex: 2 }
+			]
+		}]);		
+	});
 });
