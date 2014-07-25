@@ -9,21 +9,24 @@ describe('Directory file provider', function() {
 	
 	beforeEach(function() {	
 		clean.folder('test-data/');		
+		clean.folder('test-data/any');		
 		havingInFolder('test-data/').theFileWithName('a-file').withContent('aaa');
+		havingInFolder('test-data/any').theFileWithName('c-file').withContent('ccc');
 		havingInFolder('test-data/').theFileWithName('b-file').withContent('bbb');
 
 		filenames = fileProvider('test-data/').files();
 	});
 	
-	it('provides all the files of the given folder', function() {
-		expect(filenames.length).toEqual(2);
+	it('takes sub-directories into account', function() {
+		expect(filenames.length).toEqual(3);
 	});
 	
 	it('provides filenames with folder prefix', function() {
-		expect(filenames[0]).toEqual('test-data/a-file');
+		expect(filenames[1]).toEqual('test-data/any/c-file');
 	});
 	
 	it('can provide the content of a file', function() {
-		expect(fileProvider().contentOf(filenames[1])).toEqual('bbb');
+		expect(fileProvider().contentOf('test-data/any/c-file')).toEqual('ccc');
 	});
+	
 });

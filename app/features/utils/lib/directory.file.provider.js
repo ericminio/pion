@@ -1,14 +1,21 @@
 var fs = require('fs');
 var array = require('./array.utils');
 
-module.exports = function(folder) {
+var filesInFolder = function(folder) {
 	
 	return {
 		files: function() {
 			var filenamesInFolder = fs.readdirSync(folder);
 			var filenames = [];
 			array.forEach(filenamesInFolder, function(filename) {
-				filenames.push(folder + filename);
+				var stats = fs.statSync(folder + '/' + filename);
+				
+				if (stats.isFile()) {
+					filenames.push(folder + filename);
+				}
+				if (stats.isDirectory()) {
+					filenames = filenames.concat(filesInFolder(folder + filename + '/').files());
+				}
 			});
 			
 			return filenames;
@@ -18,3 +25,5 @@ module.exports = function(folder) {
 		},
 	}
 };
+
+module.exports = filesInFolder;
