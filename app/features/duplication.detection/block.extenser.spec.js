@@ -1,14 +1,22 @@
 var theContent = require('./lib/block.detector');
 var havingInFolder = require('../utils/lib/having.in.folder');
 
-describe('Block detector:', function() {
+describe('Block detector', function() {
 
-	it('can detect that a file has only one empty line between two indexes', function() {
+	it('can notice that two lines are only separated by one empty line', function() {
 		var content = 'one\n' +
 					  'two\n' +
 					  '\n' +
 					  'four';
 		
-		expect(theContent(content).hasOnlyEmptyLinesBetweenIndexes(2, 4)).toEqual(true);
+		expect(theContent(content).hasOnlyEmptyLinesBetweenIndexes(1, 3)).toEqual(true);
 	})
+	
+	it('does not consider two following lines', function() {
+		var content = 'one\n' +
+					  'two\n' +
+					  'three';
+		
+		expect(theContent(content).hasOnlyEmptyLinesBetweenIndexes(1, 2)).toEqual(false);
+	});
 });
