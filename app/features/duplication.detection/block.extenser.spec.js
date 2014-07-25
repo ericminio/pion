@@ -1,4 +1,4 @@
-var theFile = require('./lib/block.detector');
+var theContent = require('./lib/block.detector');
 var havingInFolder = require('../utils/lib/having.in.folder');
 
 describe('Block detector:', function() {
@@ -8,8 +8,7 @@ describe('Block detector:', function() {
 					  'two\n' +
 					  '\n' +
 					  'four';
-		havingInFolder('test-data/').theFileWithName('block').withContent(content);
 		
-		expect(theFile('test-data/block').hasOnlyEmptyLinesBetweenIndexes(2, 4)).toEqual(true);
+		expect(theContent(content).hasOnlyEmptyLinesBetweenIndexes(2, 4)).toEqual(true);
 	})
 });
