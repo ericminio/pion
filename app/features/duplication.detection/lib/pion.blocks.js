@@ -2,6 +2,7 @@ var array = require('../../utils/lib/array.utils');
 var occurence = require('./occurence');
 var line = require('./line');
 var linesDuplications = require('./pion.lines');
+var theFile = require('./block.detector');
 
 module.exports = {
 	
@@ -18,7 +19,9 @@ module.exports = {
 						var rightOccurence = right.occurences[leftIndex];
 						var condition = rightOccurence !== undefined &&
 						                leftOccurence.file == rightOccurence.file &&
-										leftOccurence.lineIndex == rightOccurence.lineIndex-1;
+										(leftOccurence.lineIndex == rightOccurence.lineIndex-1 ||
+										 theFile(leftOccurence.file).hasOnlyEmptyLinesBetweenIndexes(leftOccurence.lineIndex, rightOccurence.lineIndex)
+										);
 						
 						if (condition) {
 							candidates.push(leftOccurence);
