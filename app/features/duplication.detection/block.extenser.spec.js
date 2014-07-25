@@ -19,4 +19,15 @@ describe('Block detector', function() {
 		
 		expect(theContent(content).hasOnlyEmptyLinesBetweenIndexes(1, 2)).toEqual(false);
 	});
+	
+	it('can notice that two lines are only separated empty lines', function() {
+		var content = 'one\n' +
+					  'two\n' +
+					  '\n' +
+					  '\n' +
+					  '\n' +
+					  'four';
+		
+		expect(theContent(content).hasOnlyEmptyLinesBetweenIndexes(1, 5)).toEqual(true);
+	})	
 });

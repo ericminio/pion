@@ -5,6 +5,8 @@ module.exports = function(content) {
 	
 	return {
 		hasOnlyEmptyLinesBetweenIndexes: function(start, end) {
+			if (end - start < 2) { return false; }
+			
 			var lines = content.split('\n');
 			var onlyEmptyLines = true;
 			for (var index = start+1; index < end; index++) {
