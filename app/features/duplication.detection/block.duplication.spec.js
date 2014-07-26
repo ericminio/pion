@@ -5,52 +5,27 @@ var files = require('../utils/lib/files.provider');
 describe('Pion', function() {
 
 	var onefile = 'one-file';
+	var line1 = 'first item';
+	var line2 = 'second item';
+	var block = line1 + '\n' + line2 + '\n';
+
+	var expected = [{
+			lines: [line1, line2],
+			occurences: [ { file: onefile, lineIndex: 0 }, { file: onefile, lineIndex: 2 } ]
+		}];
 	
 	it('can detect a duplicated block of two lines in one file', function() {
-        var content = 'first item\nsecond item\n' +
-                      'first item\nsecond item';		
-					  
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
-			lines: ['first item', 'second item'],
-			occurences: [
-				{ file: onefile, lineIndex: 0 },
-				{ file: onefile, lineIndex: 2 }
-			]
-		}]);
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block))).toEqual(expected);
 	});
 	
 	it('supports a block almost duplicated three times', function() {
-		var expected = [{
-			lines: ['first item', 'second item'],
-			occurences: [
-				{ file: onefile, lineIndex: 0 },
-				{ file: onefile, lineIndex: 2 }
-			]
-		}];
-
-        var content = 'first item\nsecond item\n' +
-                      'first item\nsecond item\n' +
-                      'first item';
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual(expected);		
-
-        content = 'first item\nsecond item\n' +
-                  'first item\nsecond item\n' +
-                  'second item';					  
- 		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual(expected);
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block + line1))).toEqual(expected);		
+ 		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block + line2))).toEqual(expected);
 	});
 	
 	it('can detect a duplicated block of two lines in two file', function() {
-        var contents = [
-            'first item\nsecond item\n',
-		    'first item\nsecond item'
-		];
-					  
-		expect(blockDuplications.inFiles(files(['a', 'b']).withContents(contents))).toEqual([{
-			lines: ['first item', 'second item'],
-			occurences: [
-				{ file: 'a', lineIndex: 0 },
-				{ file: 'b', lineIndex: 0 }
-			]
+		expect(blockDuplications.inFiles(files(['a', 'b']).withContents([block, block]))).toEqual([{ lines: [line1, line2],
+			occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
 		}]);
 	});
 	
@@ -93,34 +68,8 @@ describe('Pion', function() {
 	});
 	
 	it('ignores empty lines in blocks', function() {
-        var content = 'first item\n' +
-		              'second item\n' +
-                      'first item\n' +
-					  '\n' +
-					  'second item';		
+        var content = block + line1 + '\n\n' + line2;		
 					  
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
-			lines: ['first item', 'second item'],
-			occurences: [
-				{ file: onefile, lineIndex: 0 },
-				{ file: onefile, lineIndex: 2 }
-			]
-		}]);		
-	});
-
-	it('ignores empty lines in the first block', function() {
-        var content = 'first item\n' +
-                 	  '\n' +
-		              'second item\n' +
-                      'first item\n' +
-					  'second item';		
-					  
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
-			lines: ['first item', 'second item'],
-			occurences: [
-				{ file: onefile, lineIndex: 0 },
-				{ file: onefile, lineIndex: 3 }
-			]
-		}]);		
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual(expected);		
 	});
 });
