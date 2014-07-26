@@ -10,11 +10,15 @@ describe('Running Pion', function() {
 			'{',
 			'}',
 			'},',
-			'occurences: [',
+			'return {',
+			'};',
 			']',
 			/require/,
 			/describe/,
-			'}]);'
+			'}]);',
+			'module.exports = {',
+
+			'occurences: [',
 		]).inFiles(fileProvider('app/'));
 		console.log(duplications.length + ' duplications found.');
 		
