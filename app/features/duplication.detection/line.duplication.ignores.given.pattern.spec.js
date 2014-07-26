@@ -4,12 +4,10 @@ var files = require('../utils/lib/files.provider');
 
 describe('Pion', function() {
 
-	var onefile = 'one-file';
-	
 	it('ignores lines with given string', function() {
 		var content = 'hello\n' +
 					  'hello\n';
 		
-		expect(duplications.ignoring(['hello']).inFiles(oneFile(onefile).withContent(content))).toEqual([]);
+		expect(duplications.ignoring(['hello']).inFiles(oneFile('any').withContent(content))).toEqual([]);
 	});
 });

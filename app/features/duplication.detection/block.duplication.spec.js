@@ -4,7 +4,7 @@ var files = require('../utils/lib/files.provider');
 
 describe('Pion', function() {
 
-	var onefile = 'one-file';
+	var onefile = 'block-file';
 	var line1 = 'first item';
 	var line2 = 'second item';
 	var block = line1 + '\n' + line2 + '\n';
