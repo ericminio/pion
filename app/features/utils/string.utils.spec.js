@@ -22,5 +22,9 @@ describe('String utils > ', function() {
 		it('can detect that a string is not a blanck string', function() {
 			expect(isString.blanck('anything')).toEqual(false);
 		});
+		
+		it('is considered blanck when composed of tabulations and spaces', function() {
+			expect(isString.blanck('\t\t  \t')).toEqual(true);			
+		});
 	});
 });

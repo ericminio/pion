@@ -5,7 +5,8 @@ describe('Running Pion', function() {
 		var detectDuplications = require('./app/features/duplication.detection/lib/pion.lines');
 
 		var duplications = detectDuplications.inFiles(fileProvider('app/'));
+		console.log(duplications.length + ' duplications found.');
 		
-		expect(duplications).not.toEqual(undefined);
+		expect(duplications[0]).toEqual(undefined);
 	});
 });
