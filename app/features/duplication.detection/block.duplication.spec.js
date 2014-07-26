@@ -31,25 +31,14 @@ describe('Pion', function() {
 	
 	it('can detect several duplicated blocks', function() {
 		var fileProvider = files(['a', 'b', 'c']).withContents([
-				'block 1 - line 1\n' +
-				'block 1 - line 2\n' +
-				'hello\n' +
-				'world\n' +
-				'block 1 - line 1\n' +
-				'block 1 - line 2',
-				
-				'block 1 - line 1\n' +
-				'block 1 - line 2',
-				
-				'hello\n' +
-				'world\n' +
-				'block 1 - line 1\n' +
-				'block 1 - line 2',				
-			]);
+			block + 'hello\nworld\n' + block,				
+			block,				
+			'hello\nworld\n' + block			
+		]);
 		
 		expect(blockDuplications.inFiles(fileProvider)).toEqual([
 			{
-				lines: ['block 1 - line 1', 'block 1 - line 2'],
+				lines: [line1, line2],
 				occurences: [
 					{ file: 'a', lineIndex: 0 },
 					{ file: 'a', lineIndex: 4 },
