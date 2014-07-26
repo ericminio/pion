@@ -10,7 +10,9 @@ describe('Running Pion', function() {
 			'{',
 			'}',
 			'occurences: [',
-			']'
+			']',
+			/require/,
+			/describe/
 		]).inFiles(fileProvider('app/'));
 		console.log(duplications.length + ' duplications found.');
 		

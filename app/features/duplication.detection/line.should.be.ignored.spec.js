@@ -28,4 +28,8 @@ describe('Pion', function() {
 		expect(lineShouldBeIgnored('two', ['one', 'two'])).toEqual(true);
 	});
 	
+	it('can ignore lines base on a regexp', function() {
+		expect(lineShouldBeIgnored('the rain in Spain...', [/rain/])).toEqual(true);
+	});
+	
 });

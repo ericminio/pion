@@ -4,8 +4,14 @@ module.exports = function(line, patterns) {
 	
 	var ignore = false;
 	for (var i=0 ;i<patterns.length; i++) {
-		if (line.trim() == patterns[i]) {
+		var pattern = patterns[i];
+		if (pattern.test !== undefined && pattern.test(line.trim())) {
 			ignore = true;
+			break;
+		}
+		if (line.trim() == pattern) {
+			ignore = true;
+			break;
 		}
 	}
 	return ignore;
