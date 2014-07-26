@@ -10,6 +10,6 @@ describe('Pion', function() {
 		var content = 'hello\n' +
 					  'hello\n';
 		
-		expect(duplications.ignoring('hello').inFiles(oneFile(onefile).withContent(content))).toEqual([]);
+		expect(duplications.ignoring(['hello']).inFiles(oneFile(onefile).withContent(content))).toEqual([]);
 	});
 });

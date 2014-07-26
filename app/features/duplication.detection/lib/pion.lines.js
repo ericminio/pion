@@ -4,26 +4,26 @@ var line = require('./line');
 var isString = require('../../utils/lib/string.utils');
 var lineShouldBeIgnored = require('./line.should.be.ignored');
 
-var candidateFound = function (leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex, pattern) {
+var candidateFound = function (leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex) {
 	return !isString.empty(leftLine) && !isString.blanck(leftLine) &&
 		   !isString.empty(rightLine) && !isString.blanck(rightLine) &&
 	 	leftLine == rightLine && 
 		(leftIndex !== rightIndex || leftFile !== rightFile);
 };
 
-var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplications, pattern) {
+var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplications, patterns) {
 	var leftLines = fileProvider.contentOf(leftFile).split('\n');
 	var rightLines = fileProvider.contentOf(rightFile).split('\n');		
 
 	array.forEach(leftLines, function(leftLine, leftIndex) {
 		
-		if (lineShouldBeIgnored(leftLine, pattern)) { return; }
+		if (lineShouldBeIgnored(leftLine, patterns)) { return; }
 		
 		array.forEach(rightLines, function(rightLine, rightIndex) {
 			
-			if (lineShouldBeIgnored(rightLine, pattern)) { return; }
+			if (lineShouldBeIgnored(rightLine, patterns)) { return; }
 
-			if (candidateFound(leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex, pattern)) {
+			if (candidateFound(leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex)) {
 				
 				var existingDuplication = line(leftLine).in(duplications);
 				
@@ -54,8 +54,8 @@ var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplicatio
 
 module.exports = {
 	
-	ignoring: function(pattern) {
-		this.pattern = pattern;
+	ignoring: function(patterns) {
+		this.patterns = patterns;
 		return this;
 	},
 	
@@ -66,7 +66,7 @@ module.exports = {
 		var duplications = [];
 		array.forEach(filenames, function(leftFile) {
 			array.forEach(filenames, function(rightFile) {
-				duplicationsInFiles(leftFile, rightFile, fileProvider, duplications, self.pattern);
+				duplicationsInFiles(leftFile, rightFile, fileProvider, duplications, self.patterns);
 			});
 		});
 		
