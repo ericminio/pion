@@ -19,6 +19,10 @@ describe('Running Pion is easy :).', function() {
 				/describe/,
 				'}]);',
 				'module.exports = {',
+				
+				'occurences: [',
+				'inFiles: function(fileProvider) {',
+					
 			]).inFiles(fileProvider('app/'));
 
 			console.log(JSON.stringify(duplications, null, 4));
