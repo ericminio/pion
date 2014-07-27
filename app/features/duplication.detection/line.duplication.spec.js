@@ -13,9 +13,7 @@ describe('Pion', function() {
 	var firstFile_Line4 = { file: onefile, lineIndex: 3 };
 	
 	it('can detect one line duplicated two times in one file', function() {
-		var content = line + '\nanything\n' + line;
-		
-		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
+		expect(duplications.inFiles(oneFile(onefile).withContent(line + '\nanything\n' + line))).toEqual([{
 			lines: [line],
 			occurences: [ firstFile_Line1, firstFile_Line3 ]
 		}]);
@@ -113,10 +111,8 @@ describe('Pion', function() {
 			}]);
 	});
 
-	it('suppresses tabs in lines before comparing', function() {
-		var content = 'hello world\n' + '\t\t  hello world\n';
-		
-		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
+	it('trims and suppresses tabs in lines before comparing', function() {
+		expect(duplications.inFiles(oneFile(onefile).withContent('hello world\n' + '\t\t  hello world  \n'))).toEqual([{
 				lines: ['hello world'],
 				occurences: [
 					{ file: onefile, lineIndex: 0 },

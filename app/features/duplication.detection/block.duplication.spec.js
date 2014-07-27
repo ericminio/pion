@@ -9,18 +9,18 @@ describe('Pion', function() {
 	var line2 = 'second item';
 	var block = line1 + '\n' + line2 + '\n';
 
-	var expected = [{
+	var expected = {
 			lines: [line1, line2],
 			occurences: [ { file: onefile, lineIndex: 0 }, { file: onefile, lineIndex: 2 } ]
-		}];
+		};
 	
 	it('can detect a duplicated block of two lines in one file', function() {
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block))).toEqual(expected);
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block))).toEqual([expected]);
 	});
 	
 	it('supports a block almost duplicated three times', function() {
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block + line1))).toEqual(expected);		
- 		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block + line2))).toEqual(expected);
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block + line1))).toEqual([expected]);		
+ 		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block + line2))).toEqual([expected]);
 	});
 	
 	it('can detect a duplicated block of two lines in two file', function() {
@@ -38,7 +38,7 @@ describe('Pion', function() {
 		
 		expect(blockDuplications.inFiles(fileProvider)).toEqual([
 			{
-				lines: [line1, line2],
+				lines: expected.lines,
 				occurences: [
 					{ file: 'a', lineIndex: 0 },
 					{ file: 'a', lineIndex: 4 },
@@ -59,6 +59,6 @@ describe('Pion', function() {
 	it('ignores empty lines in blocks', function() {
         var content = block + line1 + '\n\n' + line2;		
 					  
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual(expected);		
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual([expected]);		
 	});
 });
