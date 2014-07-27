@@ -19,13 +19,9 @@ describe('Running Pion is easy :).', function() {
 				/describe/,
 				'}]);',
 				'module.exports = {',
-
-				'occurences: [',
-			
 			]).inFiles(fileProvider('app/'));
 
 			console.log(JSON.stringify(duplications, null, 4));
-			console.log(duplications.length + ' duplications found.');
 		
 			expect(duplications.length).toEqual(0);
 		});
