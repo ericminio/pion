@@ -37,14 +37,11 @@ describe('Pion', function() {
 	});
 	
 	var thirdfile = 'third-file';
+	var thirdFile_Line1 = { file: thirdfile, lineIndex: 0 };
 
 	it('can detect one line duplicated three times in three files', function() {
 		expect(duplications.inFiles(files([onefile, secondfile, thirdfile]).withContents([line, line, line]))).toEqual([{ lines: [line],
-			occurences: [
-				{ file: onefile, lineIndex: 0 },
-				{ file: secondfile, lineIndex: 0 },
-				{ file: thirdfile, lineIndex: 0 }
-			]
+			occurences: [ firstFile_Line1, secondFile_Line1, thirdFile_Line1 ]
 		}]);
 	});
 	
@@ -100,23 +97,21 @@ describe('Pion', function() {
 	});
 	
 	it('trims lines before comparing', function() {
-		var content = 'hello world\n' + '  hello world\n';
-		
-		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
+		expect(duplications.inFiles(oneFile('space').withContent('hello world\n' + '  hello world\n'))).toEqual([{
 				lines: ['hello world'],
 				occurences: [
-					{ file: onefile, lineIndex: 0 },
-					{ file: onefile, lineIndex: 1 }
+					{ file: 'space', lineIndex: 0 },
+					{ file: 'space', lineIndex: 1 }
 				]
 			}]);
 	});
 
 	it('trims and suppresses tabs in lines before comparing', function() {
-		expect(duplications.inFiles(oneFile(onefile).withContent('hello world\n' + '\t\t  hello world  \n'))).toEqual([{
-				lines: ['hello world'],
+		expect(duplications.inFiles(oneFile('tabs').withContent('love you\n' + '\t\t  love you  \n'))).toEqual([{
+				lines: ['love you'],
 				occurences: [
-					{ file: onefile, lineIndex: 0 },
-					{ file: onefile, lineIndex: 1 }
+					{ file: 'tabs', lineIndex: 0 },
+					{ file: 'tabs', lineIndex: 1 }
 				]
 			}]);
 	});

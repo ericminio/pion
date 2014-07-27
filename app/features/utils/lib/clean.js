@@ -5,9 +5,9 @@ var clean = {
 	
 	folder: function(folder) {
 		if (!fs.existsSync(folder)) fs.mkdirSync(folder);
+		
 		var files = fs.readdirSync(folder);
-		array.forEach(files, function(file) {
-			
+		array.forEach(files, function(file) {			
 			var stats = fs.statSync(folder + '/' + file);
 			
 			if (stats.isFile()) {

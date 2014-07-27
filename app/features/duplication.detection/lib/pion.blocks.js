@@ -6,8 +6,16 @@ var theContent = require('./block.detector');
 
 module.exports = {
 	
+	ignoring: function(patterns) {
+		this.patterns = patterns || [];
+		return this;
+	},
+	
 	inFiles: function(fileProvider) {
-		var duplicatedLines = linesDuplications.inFiles(fileProvider);
+		if (this.logger != null) {
+			linesDuplications.logger = this.logger;
+		}
+		var duplicatedLines = linesDuplications.ignoring(this.patterns).inFiles(fileProvider);
 		var duplicatedBlocks = [];
 		
 		array.forEach(duplicatedLines, function(left) {

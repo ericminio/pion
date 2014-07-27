@@ -94,9 +94,7 @@ describe('Arrays', function() {
 	describe('array.firstItemIn', function() {
 		
 		var withPrice = function(price) {
-			return function(item) {
-				return item.price == price;
-			}
+			return function(item) { return item.price == price; }
 		};
 		
 		it('is an alias for array.first', function() {

@@ -7,6 +7,7 @@ describe('Pion', function() {
 	var onefile = 'block-file';
 	var line1 = 'first item';
 	var line2 = 'second item';
+	var line3 = 'third item';
 	var block = line1 + '\n' + line2 + '\n';
 
 	var expected = {
@@ -29,6 +30,15 @@ describe('Pion', function() {
 		}]);
 	});
 	
+	it('can detect a duplicated block of three lines in two file', function() {
+		var block3 = line1 + '\n' + line2 + '\n' + line3 + '\n';
+		expect(blockDuplications.inFiles(files(['a', 'b'])
+							    .withContents([block3, block3, block3])))
+								.toEqual([{ lines: [line1, line2, line3 ],
+			occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
+		}]);
+	});
+
 	it('can detect several duplicated blocks', function() {
 		var fileProvider = files(['a', 'b', 'c']).withContents([
 			block + 'hello\nworld\n' + block,				

@@ -5,16 +5,17 @@ var filesInFolder = function(folder) {
 	
 	return {
 		files: function() {
-			var filenamesInFolder = fs.readdirSync(folder);
 			var filenames = [];
-			array.forEach(filenamesInFolder, function(filename) {
-				var stats = fs.statSync(folder + '/' + filename);
+
+			var files = fs.readdirSync(folder);
+			array.forEach(files, function(file) {
+				var stats = fs.statSync(folder + '/' + file);
 				
 				if (stats.isFile()) {
-					filenames.push(folder + filename);
+					filenames.push(folder + file);
 				}
 				if (stats.isDirectory()) {
-					filenames = filenames.concat(filesInFolder(folder + filename + '/').files());
+					filenames = filenames.concat(filesInFolder(folder + file + '/').files());
 				}
 			});
 			
