@@ -25,7 +25,18 @@ describe('Running Pion is easy :).', function() {
 					
 			]).inFiles(fileProvider('app/'));
 
-			console.log(JSON.stringify(duplications, null, 4));
+			console.log('Duplicated lines: ' + JSON.stringify(duplications, null, 4));
+		
+			expect(duplications.length).toEqual(0);
+		});
+		
+		it('should have 0 duplicated blocks', function() {
+			var fileProvider = require('./app/features/utils/lib/directory.file.provider');
+			var detectDuplications = require('./app/features/duplication.detection/lib/pion.blocks');
+			
+			var duplications = detectDuplications.inFiles(fileProvider('app/'));
+
+			console.log('Duplicated blocks: ' + JSON.stringify(duplications, null, 4));
 		
 			expect(duplications.length).toEqual(0);
 		});
