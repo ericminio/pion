@@ -7,7 +7,7 @@ var lineShouldBeIgnored = require('./line.should.be.ignored');
 var candidateFound = function (leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex) {
 	return !isString.empty(leftLine) && !isString.blanck(leftLine) &&
 		   !isString.empty(rightLine) && !isString.blanck(rightLine) &&
-	 	leftLine == rightLine && 
+	 	leftLine.trim() == rightLine.trim() && 
 		(leftIndex !== rightIndex || leftFile !== rightFile);
 };
 

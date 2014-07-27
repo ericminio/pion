@@ -100,4 +100,28 @@ describe('Pion', function() {
 		
 		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([]);
 	});
+	
+	it('trims lines before comparing', function() {
+		var content = 'hello world\n' + '  hello world\n';
+		
+		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
+				lines: ['hello world'],
+				occurences: [
+					{ file: onefile, lineIndex: 0 },
+					{ file: onefile, lineIndex: 1 }
+				]
+			}]);
+	});
+
+	it('suppresses tabs in lines before comparing', function() {
+		var content = 'hello world\n' + '\t\t  hello world\n';
+		
+		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
+				lines: ['hello world'],
+				occurences: [
+					{ file: onefile, lineIndex: 0 },
+					{ file: onefile, lineIndex: 1 }
+				]
+			}]);
+	});
 });
