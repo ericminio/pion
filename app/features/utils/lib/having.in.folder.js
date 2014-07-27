@@ -7,8 +7,8 @@ module.exports = function(folder) {
 			this.filename = filename;
 			return this;
 		},
-		withContent: function(content) {
-			fs.writeFileSync(folder + '/' + this.filename, content);
+		withContent: function(fileContent) {
+			fs.writeFileSync(folder + '/' + this.filename, fileContent);
 		}
 	};
 };

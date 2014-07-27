@@ -6,9 +6,11 @@ module.exports = {
 	},
 	
 	first: function(collection, callback) {
-		for(var i=0; i<collection.length; i++) {
-			if (callback(collection[i])) return collection[i];
-		}
+		var found;
+		this.forEach(collection, function(item) {
+			if (callback(item)) found = item;
+		});
+		return found;
 	},
 	
 	hasOneItemIn: function(collection, callback) {
@@ -21,12 +23,9 @@ module.exports = {
 	
 	remove: function(item, collection) {
         var index = collection.indexOf(item);
-        if (index == -1) {
-            return collection;
-        }
-        else {
+        if (index != -1) {
             collection = collection.slice(0, index).concat(collection.slice(index+1));
-            return collection;
         }
+		return collection;
 	}
 };

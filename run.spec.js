@@ -1,27 +1,34 @@
-describe('Running Pion', function() {
+describe('Running Pion is easy :).', function() {
 	
-	it('is easy :)', function() {		
-		var fileProvider = require('./app/features/utils/lib/directory.file.provider');
-		var detectDuplications = require('./app/features/duplication.detection/lib/pion.lines');
-
-		var duplications = detectDuplications.ignoring([
-			'});',
-			']);',
-			'{',
-			'}',
-			'},',
-			'return {',
-			'};',
-			']',
-			/require/,
-			/describe/,
-			'}]);',
-			'module.exports = {',
-
-			'occurences: [',
-		]).inFiles(fileProvider('app/'));
-		console.log(duplications.length + ' duplications found.');
+	describe('Pion', function() {
 		
-		expect(duplications[0]).toEqual(undefined);
+		it('should have 0 duplicated lines', function() {		
+			var fileProvider = require('./app/features/utils/lib/directory.file.provider');
+			var detectDuplications = require('./app/features/duplication.detection/lib/pion.lines');
+
+			var duplications = detectDuplications.ignoring([
+				'});',
+				']);',
+				'{',
+				'}',
+				'},',
+				'return {',
+				'};',
+				']',
+				/require/,
+				/describe/,
+				'}]);',
+				'module.exports = {',
+
+				'occurences: [',
+			
+			]).inFiles(fileProvider('app/'));
+
+			console.log(JSON.stringify(duplications, null, 4));
+			console.log(duplications.length + ' duplications found.');
+		
+			expect(duplications.length).toEqual(0);
+		});
 	});
+
 });

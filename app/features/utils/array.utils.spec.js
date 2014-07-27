@@ -22,9 +22,7 @@ describe('Arrays', function() {
 	});
 		
 	it('can identify the index of an element', function() {
-		var table = [1, 2, 3, 4, 5, 6];
-
-		expect(table.indexOf(3)).toEqual(2);
+		expect([1, 2, 3, 4, 5, 6].indexOf(3)).toEqual(2);
 	});
 	
 	describe('array.foreach', function() {
@@ -38,11 +36,11 @@ describe('Arrays', function() {
 		});
 		
 		it('can extract one item from a collection', function() {
-			mouse = { price: 10 };
-			keyboard = { price: 100 };
+			mouse = { price: 50 };
+			keyboard = { price: 500 };
 			var ten;
 			array.forEach([mouse, keyboard], function(item) {
-				if (item.price == 10) {
+				if (item.price == 50) {
 					ten = item;
 				}
 			});
@@ -51,13 +49,13 @@ describe('Arrays', function() {
 		});
 		
 		it('injects the index of the item in collection as second parameter', function() {
-			mouse = { price: 10 };
-			keyboard = { price: 100 };
+			mouse = { price: 11 };
+			keyboard = { price: 111 };
 			array.forEach([mouse, keyboard], function(item, index) {
-				if (item.price == 10) {
+				if (item.price == 11) {
 					expect(index).toEqual(0);
 				}
-				if (item.price == 100) {
+				if (item.price == 111) {
 					expect(index).toEqual(1);
 				}
 			});			
@@ -67,38 +65,29 @@ describe('Arrays', function() {
 	
 	describe('array.first', function() {
 
-		it('can select one item from a collection', function() {
-			mouse = { price: 10 };
-			keyboard = { price: 100 };
-			var ten = array.first([mouse, keyboard], function(item) {
-				return item.price == 10;
+		it('can select first matching item from a collection', function() {
+			mouse = { price: 30 };
+			keyboard = { price: 30 };
+			var first = array.first([mouse, keyboard], function(item) {
+				return item.price == 30;
 			});
 			
-			expect(ten).toEqual(mouse);
+			expect(first).toEqual(mouse);
 		});
 		
 	});
 	
 	describe('array.hasOneItemIn', function() {
 
+		var mouse = { price: 10 };
+		var keyboard = { price: 100 };			
+
 		it('identify when an item is in a collection', function() {
-			mouse = { price: 10 };
-			keyboard = { price: 100 };
-			var found = array.hasOneItemIn([mouse, keyboard], function(item) {
-				return item.price == 10;
-			});
-			
-			expect(found).toBe(true);
+			expect(array.hasOneItemIn([mouse, keyboard], function(item) { return item.price == 10; })).toBe(true);
 		});
 		
 		it('identify when an item is not in a collection', function() {
-			mouse = { price: 10 };
-			keyboard = { price: 100 };
-			var found = array.hasOneItemIn([mouse, keyboard], function(item) {
-				return item.price == 20;
-			});
-			
-			expect(found).toBe(false);
+			expect(array.hasOneItemIn([mouse, keyboard], function(item) { return item.price == 20; })).toBe(false);
 		});
 	});
 	
@@ -110,12 +99,12 @@ describe('Arrays', function() {
 			}
 		};
 		
-		it('can select one item from a collection', function() {
+		it('is an alias for array.first', function() {
 			mouse = { price: 10 };
-			keyboard = { price: 100 };
-			var ten = extract.firstItemIn([mouse, keyboard], withPrice(10));
+			keyboard = { price: 10 };
+			var firstMatchingItem = extract.firstItemIn([mouse, keyboard], withPrice(10));
 			
-			expect(ten).toEqual(mouse);
+			expect(firstMatchingItem).toEqual(mouse);
 		});
 		
 	});
