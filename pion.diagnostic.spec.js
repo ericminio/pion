@@ -1,8 +1,8 @@
-var all = require('./app/features/utils/lib/ignoring');
+var all = require('./ignoring/ignoring');
 
-var javascript = require('./app/features/utils/lib/ignoring.javascript');
-var node = require('./app/features/utils/lib/ignoring.node');
-var jasmine = require('./app/features/utils/lib/ignoring.jasmine');
+var javascript = require('./ignoring/ignoring.javascript');
+var node = require('./ignoring/ignoring.node');
+var jasmine = require('./ignoring/ignoring.jasmine');
 
 describe('Running Pion is easy :).', function() {
     
