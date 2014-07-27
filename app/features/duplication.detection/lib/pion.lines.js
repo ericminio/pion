@@ -54,21 +54,36 @@ var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplicatio
 
 module.exports = {
 	
+	logger: {
+		start: function(filecount) {},
+		progress: function(leftFile, rightFile, leftIndex, rightIndex, duplications) {},
+		end: function() {},
+	},
+	
 	ignoring: function(patterns) {
 		this.patterns = patterns;
 		return this;
 	},
 	
 	inFiles: function(fileProvider) {
-		var self = this;
 		var filenames = fileProvider.files();
+
+		this.logger.start(filenames.length);
 		
+		var filecount = filenames.length;
 		var duplications = [];
-		array.forEach(filenames, function(leftFile) {
-			array.forEach(filenames, function(rightFile) {
-				duplicationsInFiles(leftFile, rightFile, fileProvider, duplications, self.patterns);
-			});
-		});
+		for (var leftIndex = 0; leftIndex < filecount; leftIndex++) {
+			var leftFile = filenames[leftIndex];
+			
+			for (var rightIndex = 0; rightIndex < filecount; rightIndex++) {				
+				var rightFile = filenames[rightIndex];
+				duplicationsInFiles(leftFile, rightFile, fileProvider, duplications, this.patterns);
+
+				this.logger.progress(leftFile, rightFile, leftIndex, rightIndex, duplications);
+			}
+		}
+		
+		this.logger.end();
 		
 		return duplications;
 	}
