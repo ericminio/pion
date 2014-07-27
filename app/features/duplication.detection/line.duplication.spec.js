@@ -4,54 +4,44 @@ var files = require('../utils/lib/files.provider');
 
 describe('Pion', function() {
 
+	var line = 'first duplication';
+
 	var onefile = 'one-file';
+	var firstFile_Line1 = { file: onefile, lineIndex: 0 };
+	var firstFile_Line2 = { file: onefile, lineIndex: 1 };
+	var firstFile_Line3 = { file: onefile, lineIndex: 2 };
+	var firstFile_Line4 = { file: onefile, lineIndex: 3 };
 	
 	it('can detect one line duplicated two times in one file', function() {
-		var content = 'first line\nfirst duplication\nfirst duplication';
+		var content = line + '\nanything\n' + line;
 		
 		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
-			lines: ['first duplication'],
-			occurences: [
-				{ file: onefile, lineIndex: 1 },
-				{ file: onefile, lineIndex: 2 }
-			]
+			lines: [line],
+			occurences: [ firstFile_Line1, firstFile_Line3 ]
 		}]);
 	});
 	
 	it('can detect one line duplicated three times in one file', function() {
-		var content = 'first line\nfirst duplication\nfirst duplication\nfirst duplication';
+		var content = 'anything\n' + line + '\n' + line + '\n' + line;
 		
-		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{
-			lines: ['first duplication'],
-			occurences: [
-				{ file: onefile, lineIndex: 1 },
-				{ file: onefile, lineIndex: 2 },
-				{ file: onefile, lineIndex: 3 }
-			]
+		expect(duplications.inFiles(oneFile(onefile).withContent(content))).toEqual([{ lines: [line],
+			occurences: [ firstFile_Line2, firstFile_Line3, firstFile_Line4 ]
 		}]);
 	});
 
 	var secondfile = 'second-file';
+	var secondFile_Line1 = { file: secondfile, lineIndex: 0 };
 	
 	it('can detect one line duplicated two times in two files', function() {
-		var content = 'first duplication';
-		
-		expect(duplications.inFiles(files([onefile, secondfile]).withContents([content, content]))).toEqual([{
-			lines: ['first duplication'],
-			occurences: [
-				{ file: onefile, lineIndex: 0 },
-				{ file: secondfile, lineIndex: 0 }
-			]
+		expect(duplications.inFiles(files([onefile, secondfile]).withContents([line, line]))).toEqual([{ lines: [line],
+			occurences: [ firstFile_Line1, secondFile_Line1 ]
 		}]);
 	});
 	
 	var thirdfile = 'third-file';
 
 	it('can detect one line duplicated three times in three files', function() {
-		var content = 'first duplication';
-		
-		expect(duplications.inFiles(files([onefile, secondfile, thirdfile]).withContents([content, content, content]))).toEqual([{
-			lines: ['first duplication'],
+		expect(duplications.inFiles(files([onefile, secondfile, thirdfile]).withContents([line, line, line]))).toEqual([{ lines: [line],
 			occurences: [
 				{ file: onefile, lineIndex: 0 },
 				{ file: secondfile, lineIndex: 0 },
