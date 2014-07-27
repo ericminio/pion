@@ -16,5 +16,5 @@ Desires:
 
 ## See it work
 
-Run (https://github.com/ericminio/pion/blob/master/duplication.diagnostic.spec.js)
+Run the [Duplication diagnostic test](https://github.com/ericminio/pion/blob/master/duplication.diagnostic.spec.js)
 
