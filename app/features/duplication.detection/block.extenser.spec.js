@@ -9,7 +9,7 @@ describe('Block detector', function() {
 		var content = one + two + '\n' + four;
 		
 		expect(theContent(content).hasOnlyEmptyLinesBetweenIndexes(1, 3)).toEqual(true);
-	})
+	});
 	
 	it('does not consider two following lines', function() {
 		var content = one + two + three;
@@ -21,5 +21,5 @@ describe('Block detector', function() {
 		var content = one + two + '\n\n\n' + four;
 		
 		expect(theContent(content).hasOnlyEmptyLinesBetweenIndexes(1, 5)).toEqual(true);
-	})	
+	});	
 });
