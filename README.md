@@ -1,30 +1,20 @@
 [![Travis Build Status](https://travis-ci.org/ericminio/pion.png?branch=master)](https://travis-ci.org/ericminio/pion)
 
-Work in progress
+## Work in progress
+
+Available:
+* detection of exact duplicated lines
+* detection of duplicated blocks of exact duplicated lines
+* from a folder
 
 Desires:
-* detect duplication of lines
-* detect duplication of blocks of lines
-* from a folder
+* partial duplication
 * from an online repository
 * compute duplication percentage
-* make it a level in Yose
+* make it easy to use it to build a level for Yose
 
 
-## What we have so far
+## See it work
 
-Install [node.js](http://nodejs.org/) then run from the command line
-
-```sh
-npm install
-sudo npm install jasmine-node -g
-```
-
-Check your install: run the test
-
-```sh
-npm test
-```
-
-Read the test of the features
+Run (https://github.com/ericminio/pion/blob/master/duplication.diagnostic.spec.js)
 
