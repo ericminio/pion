@@ -4,10 +4,10 @@
 
 Available:
 * detection of exact duplicated lines
-* detection of duplicated blocks of exact duplicated lines
 * from a folder
 
 Desires:
+* detection of duplicated blocks of exact duplicated lines
 * partial duplication
 * from an online repository
 * compute duplication percentage

@@ -15,35 +15,74 @@ module.exports = {
 		if (this.logger != null) {
 			linesDuplications.logger = this.logger;
 		}
-		var duplicatedLines = linesDuplications.ignoring(this.patterns).inFiles(fileProvider);
-		var duplicatedBlocks = [];
+		var duplicatedLines = linesDuplications.ignoring(this.patterns).inFiles(fileProvider);		
+		if (duplicatedLines.length < 2) { return []; }
 		
-		array.forEach(duplicatedLines, function(left) {
-			array.forEach(duplicatedLines, function(right) {
-				if (left != right) {
-					
-					var candidates = [];
-					array.forEach(left.occurences, function(leftOccurence, leftIndex) {
-						var rightOccurence = right.occurences[leftIndex];
-						var condition = rightOccurence !== undefined &&
-						                leftOccurence.file == rightOccurence.file &&
-										(leftOccurence.lineIndex == rightOccurence.lineIndex-1 ||
-										 theContent(fileProvider.contentOf(leftOccurence.file)).hasOnlyEmptyLinesBetweenIndexes(leftOccurence.lineIndex, rightOccurence.lineIndex)
-										);
-						
-						if (condition) {
-							candidates.push(leftOccurence);
-						}
-					});
-					if (candidates.length > 1) {
-						duplicatedBlocks.push({
-							lines: left.lines.concat(right.lines),
-							occurences: candidates
-						})
+		var duplicatedBlocks = [];				
+		
+		var candidate = duplicatedLines[0];
+		
+		var lines = candidate.lines;
+		var occurences = [];
+		
+		for (var candidateOccurenceIndex = 0; candidateOccurenceIndex < candidate.occurences.length; candidateOccurenceIndex++) {
+			var candidateOccurence = candidate.occurences[candidateOccurenceIndex];
+			
+			if (candidateOccurence.lineIndex == duplicatedLines[1].occurences[candidateOccurenceIndex].lineIndex - 1) { 
+				occurences.push(candidateOccurence); 
+				
+				var lineAlreadyPresent = false;
+				for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+					if (lines[lineIndex] == duplicatedLines[1].lines[0]) {
+						lineAlreadyPresent = true;
 					}
 				}
+				if (! lineAlreadyPresent) {
+					lines.push(duplicatedLines[1].lines[0]);
+				}
+			}
+		}		
+
+		if (duplicatedLines.length > 2) {
+			
+			for (var candidateOccurenceIndex = 0; candidateOccurenceIndex < candidate.occurences.length; candidateOccurenceIndex++) {
+				var candidateOccurence = candidate.occurences[candidateOccurenceIndex];
+			
+				if (candidateOccurence.lineIndex == duplicatedLines[1].occurences[candidateOccurenceIndex].lineIndex - 1 &&
+					candidateOccurence.lineIndex == duplicatedLines[2].occurences[candidateOccurenceIndex].lineIndex - 2) { 
+					
+					occurenceAlreadyPresent = false;
+					for (var occurenceIndex = 0; occurenceIndex < occurences.length; occurenceIndex++) {
+						if (occurences[occurenceIndex] == candidateOccurence) {
+							occurenceAlreadyPresent = true;
+						}
+					}
+					if (! occurenceAlreadyPresent) {
+						occurences.push(candidateOccurence); 
+					}
+									
+					var lineAlreadyPresent = false;
+					for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+						if (lines[lineIndex] == duplicatedLines[2].lines[0]) {
+							lineAlreadyPresent = true;
+						}
+					}
+					if (! lineAlreadyPresent) {
+						lines.push(duplicatedLines[2].lines[0]);
+					}
+				}
+			}	
+		}
+
+	
+		
+		if (occurences.length > 1) {
+			duplicatedBlocks.push({ 
+				lines : lines, 
+				occurences : occurences
 			});
-		});
+		}
+		
 		
 		return duplicatedBlocks;
 	}

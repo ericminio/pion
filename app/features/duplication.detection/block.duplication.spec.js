@@ -4,71 +4,61 @@ var files = require('../utils/lib/files.provider');
 
 describe('Pion', function() {
 
+	it('returns no block duplications when there is not even any line duplication', function() {
+		expect(blockDuplications.inFiles(oneFile('any-file').withContent('any content'))).toEqual([]);
+	});
+	
+	it('returns no block duplications when there is not at least 2 lines duplication', function() {
+		expect(blockDuplications.inFiles(oneFile('any-file').withContent('duplication\nduplication'))).toEqual([]);
+	});
+	
+	it('returns no block duplications when the 2 lines duplication can not be merged in one block', function() {
+		expect(blockDuplications.inFiles(oneFile('any-file').withContent('1\n2\n1\n3\n2'))).toEqual([]);
+	});
+
 	var onefile = 'block-file';
-	var line1 = 'first item';
-	var line2 = 'second item';
-	var line3 = 'third item';
+	var line1 = 'line 1';
+	var line2 = 'line 2';
+	var line3 = 'line 3';
 	var block = line1 + '\n' + line2 + '\n';
 
-	var expected = {
+	it('can detect a duplicated block of two lines in one file', function() {
+		var block2 = line1 + '\n' + line2 + '\n';
+		
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block2 + block2))).toEqual([{
 			lines: [line1, line2],
 			occurences: [ { file: onefile, lineIndex: 0 }, { file: onefile, lineIndex: 2 } ]
-		};
-	
-	it('can detect a duplicated block of two lines in one file', function() {
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block))).toEqual([expected]);
+		}]);
 	});
 	
-	it('supports a block almost duplicated three times', function() {
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block + line1))).toEqual([expected]);		
- 		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + block + line2))).toEqual([expected]);
+	it('can detect a duplicated block of three lines in one file', function() {
+		var block3 = line1 + '\n' + line2 + '\n' + line3 + '\n';
+		
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block3 + block3))).toEqual([{
+			lines: [line1, line2, line3],
+			occurences: [ { file: onefile, lineIndex: 0 }, { file: onefile, lineIndex: 3 } ]
+		}]);
 	});
 	
-	it('can detect a duplicated block of two lines in two file', function() {
+	xit('ignores empty lines in blocks', function() {
+		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block + line1 + '\n\n' + line2))).toEqual([{
+			lines: [line1, line2],
+			occurences: [ { file: onefile, lineIndex: 0 }, { file: onefile, lineIndex: 2 } ]
+		}]);		
+	});
+
+	xit('can detect a duplicated block of two lines in two files', function() {
 		expect(blockDuplications.inFiles(files(['a', 'b']).withContents([block, block]))).toEqual([{ lines: [line1, line2],
 			occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
 		}]);
 	});
 	
-	it('can detect a duplicated block of three lines in two file', function() {
+	xit('can detect a duplicated block of three lines in two files', function() {
 		var block3 = line1 + '\n' + line2 + '\n' + line3 + '\n';
-		expect(blockDuplications.inFiles(files(['a', 'b'])
+		expect(blockDuplications.inFiles(files(['one', 'two'])
 							    .withContents([block3, block3, block3])))
 								.toEqual([{ lines: [line1, line2, line3 ],
-			occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
+			occurences: [ { file: 'one', lineIndex: 0 }, { file: 'two', lineIndex: 0 } ]
 		}]);
-	});
-
-	it('can detect several duplicated blocks', function() {
-		var fileProvider = files(['a', 'b', 'c']).withContents([
-			block + 'hello\nworld\n' + block,				
-			block,				
-			'hello\nworld\n' + block			
-		]);
-		
-		expect(blockDuplications.inFiles(fileProvider)).toEqual([
-			{
-				lines: expected.lines,
-				occurences: [
-					{ file: 'a', lineIndex: 0 },
-					{ file: 'a', lineIndex: 4 },
-					{ file: 'b', lineIndex: 0 },
-					{ file: 'c', lineIndex: 2 }
-				]
-			},
-			{
-				lines: ['hello', 'world'],
-				occurences: [
-					{ file: 'a', lineIndex: 2 },
-					{ file: 'c', lineIndex: 0 }
-				]
-			}
-		]);
-	});
-	
-	it('ignores empty lines in blocks', function() {
-        var content = block + line1 + '\n\n' + line2;		
-					  
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(content))).toEqual([expected]);		
 	});
 });
