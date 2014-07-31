@@ -1,6 +1,6 @@
 var files = require('./lib/files.provider');
 
-describe('Files provider', function() {
+describe('Files provider with contents builder', function() {
 
 	var provider;
 	

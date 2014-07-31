@@ -11,6 +11,21 @@ module.exports = function(filenames) {
 					}
 				}
 			};
+		},
+		
+		withContentsInLine: function(contentsInLine) {
+			
+			var contents = [];
+			for (var i = 0; i < contentsInLine[0].length ; i++) {
+				contents.push('');
+			}			
+			for (var i = 0; i < contentsInLine.length ; i++) {
+				for (var j = 0; j< contentsInLine[i].length; j++) {
+					contents[j] = contents[j] + contentsInLine[i][j] + '\n';
+				}
+			}
+
+			return this.withContents(contents);
 		}
 	};
 };

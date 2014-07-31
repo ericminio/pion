@@ -19,7 +19,11 @@ describe('Pion', function() {
 	var block = line1 + '\n' + line2 + '\n';
 
 	it('can detect a duplicated block of two lines in two files', function() {
-		expect(blockDuplications.inFiles(files(['a', 'b']).withContents([block, block]))).toEqual([{ lines: [line1, line2],
+		var fileProvider = files(['a', 'b']).withContentsInLine([
+            [line1,     line1],
+            [line2,     line2]  ]);	
+		
+		expect(blockDuplications.inFiles(fileProvider)).toEqual([{ lines: [line1, line2],
 			occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
 		}]);
 	});
@@ -51,5 +55,20 @@ describe('Pion', function() {
 	
 	it('returns no block duplications when the 2 lines duplication can not be merged in one block', function() {
 		expect(blockDuplications.inFiles(oneFile('any-file').withContent('1\n2\n1\n3\n2'))).toEqual([]);
+	});
+	
+	it('can detect a block duplication not on the first duplication', function() {
+		var fileProvider = files(['a', 'b']).withContentsInLine([
+            [line1,     	line1],
+			['anything', 	'something'],			
+            [line2,     	'else'],
+            [line3,     	line2] ,
+			['',            line3] 
+		]);	
+		
+		expect(blockDuplications.inFiles(fileProvider)).toEqual([{ lines: [line2, line3],
+			occurences: [ { file: 'a', lineIndex: 2 }, { file: 'b', lineIndex: 3 } ]
+		}]);
+		
 	});
 });
