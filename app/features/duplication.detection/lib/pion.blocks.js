@@ -16,6 +16,11 @@ var addInCollectionIfNotPresent = function(collection, item) {
 	}
 };
 
+var selectLines = require('./select.lines.in.file');
+var order = require('./order');
+var keepsOnlyLinesIn = require('./keeps.only.lines.in');
+var keepsOnlyAdjacentLines = require('./keeps.only.adjacent.lines');
+
 module.exports = {
 	
 	ignoring: function(patterns) {
@@ -32,44 +37,59 @@ module.exports = {
 		
 		var duplicatedBlocks = [];				
 		
-		var candidate = duplicatedLines[0];
+//		console.log('');
+//		console.log(JSON.stringify(duplicatedLines, null, 2));
 		
-		var lines = candidate.lines;
-		var occurences = [];
-		
-		for (var candidateOccurenceIndex = 0; candidateOccurenceIndex < candidate.occurences.length; candidateOccurenceIndex++) {
-			var candidateOccurence = candidate.occurences[candidateOccurenceIndex];
+		var candidate = duplicatedLines[0];	
+		var blocks = [];	
+		array.forEach(candidate.occurences, function(candidateOccurence) {
 			
-			var matching = candidateOccurence.lineIndex == duplicatedLines[1].occurences[candidateOccurenceIndex].lineIndex - 1;
-			
-			if (matching) { 
+			var currentFile = candidateOccurence.file;
+			var linesInCurrentFile = selectLines(duplicatedLines).inFile(currentFile);
+			order(linesInCurrentFile).byLineIndex();
+			linesInCurrentFile = keepsOnlyLinesIn(linesInCurrentFile).withLineIndexGreaterOrEqualTo(candidateOccurence.lineIndex);
+			linesInCurrentFile = keepsOnlyAdjacentLines(linesInCurrentFile);
+									
+			if (linesInCurrentFile.length > 1) {
 				
-				addInCollectionIfNotPresent(occurences, candidateOccurence);
-				addInCollectionIfNotPresent(lines, duplicatedLines[1].lines[0]);
+//				console.log(JSON.stringify(linesInCurrentFile, null, 4));
+				
+				var mergedLines = [];
+				for (var index=0; index < linesInCurrentFile.length; index++) {
+					mergedLines.push(linesInCurrentFile[index].line);
+				}
+
+				var block = { lines: mergedLines, occurences: candidateOccurence };		
+				
+				blocks.push(block);		
+			}
+		});
+		
+//		console.log(JSON.stringify(blocks, null, 4));
+		if (blocks.length > 1) {
+			
+			var occurences = [];
+			var min = 1e6;
+			array.forEach(blocks, function(block) {
+				if (block.lines.length < min) {
+					min = block.lines.length;
+				}
+				occurences = occurences.concat(block.occurences);
+			});
+//			console.log(min);
+			
+			var lines = [];
+			for (var index=0 ; index < min; index ++) {
+				lines.push(blocks[0].lines[index]);
 			}
 			
-			if (duplicatedLines.length > 2) {
-
-				matching = (
-					candidateOccurence.lineIndex == duplicatedLines[1].occurences[candidateOccurenceIndex].lineIndex - 1 &&
-					candidateOccurence.lineIndex == duplicatedLines[2].occurences[candidateOccurenceIndex].lineIndex - 2
-				);
-  
-				if (matching) { 
-					addInCollectionIfNotPresent(occurences, candidateOccurence);
-					addInCollectionIfNotPresent(lines, duplicatedLines[2].lines[0]);				
-				}
-			}
-		}		
-
-		if (occurences.length > 1) {
-			duplicatedBlocks.push({ 
-				lines : lines, 
-				occurences : occurences
-			});
+			duplicatedBlocks.push({
+				lines: lines,
+				occurences: occurences
+			})
 		}
 		
-		
+
 		return duplicatedBlocks;
 	}
 };

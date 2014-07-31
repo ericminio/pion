@@ -8,7 +8,7 @@ describe('Running Pion is easy :).', function() {
     
     describe('Pion', function() {
         
-        xit('should have 0 duplicated lines', function() {       
+        it('should have 0 duplicated lines', function() {       
 			var folder = 'app/';
 			console.log('Scanning directory ' + folder + ' for lines duplication');
 			
@@ -32,7 +32,7 @@ describe('Running Pion is easy :).', function() {
             expect(duplications.length).toEqual(0);
         });
         
-        it('should have 0 duplicated blocks', function() {
+        xit('should have 0 duplicated blocks', function() {
 			var folder = 'app/';
 			console.log('Scanning directory ' + folder + ' for blocks duplication');
 			
