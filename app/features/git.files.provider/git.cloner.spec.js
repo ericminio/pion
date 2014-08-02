@@ -6,8 +6,8 @@ describe('Git cloner,', function() {
 
 	beforeEach(function(done) {
 		var exec = require('child_process').exec;
-		var rmdir = exec('rm -rf ' + cloneFolder, function(error, stdout, stderr) {
-			if (error !== null) {
+		var rmdir = exec('rm -rf ' + cloneFolder, function(rmerror, stdout, stderr) {
+			if (rmerror !== null) {
 				console.log('exec error: ' + error);
 			}
 			done();
@@ -17,23 +17,25 @@ describe('Git cloner,', function() {
 	describe('when the repository exists,', function() {
 		
 		var repo = './app/features/git.files.provider/data/repo-with-one-file';
+		var error;
 		
-		it('returns without error', function(done) {
+		beforeEach(function(done) {
 			cloneGitRepository(repo, cloneFolder, function(err) {
-				expect(err).toEqual(undefined);
+				error = err;
 				done();			
 			});		
 		});
+		
+		it('returns without error', function() {
+			expect(error).toEqual(undefined);
+		});
 
-		it('clones the content', function(done) {
-			cloneGitRepository(repo, cloneFolder, function(err) {
-				var fs = require('fs');
-				var files = fs.readdirSync(cloneFolder);
+		it('clones the content', function() {
+			var fs = require('fs');
+			var files = fs.readdirSync(cloneFolder);
 
-				expect(files).toContain('.git');
-				expect(files).toContain('README.md');
-				done();			
-			});		
+			expect(files).toContain('.git');
+			expect(files).toContain('README.md');
 		});
 	});
 
