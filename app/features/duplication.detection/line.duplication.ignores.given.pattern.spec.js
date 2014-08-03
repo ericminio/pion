@@ -1,6 +1,7 @@
 var lineDuplications = require('./lib/pion.lines');
 var oneFile = require('../utils/lib/one.file.provider');
 var files = require('../utils/lib/files.provider');
+var isEmptyDuplications = require('./is.empty.duplications');
 
 describe('Pion', function() {
 
@@ -8,9 +9,6 @@ describe('Pion', function() {
 		var content = 'hello\n' +
 					  'hello\n';
 		
-		lineDuplications.ignoring(['hello']).inFiles(oneFile('any').withContent(content), function(duplications) {
-			expect(duplications).toEqual([]);
-			done();
-		});
+		lineDuplications.ignoring(['hello']).inFiles(oneFile('any').withContent(content), isEmptyDuplications(done));
 	});
 });

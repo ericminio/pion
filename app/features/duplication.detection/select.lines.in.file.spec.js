@@ -19,16 +19,16 @@ describe('Pion', function() {
 		var duplications = [
 			{
 				lines: ['one'],
-				occurences: [ { file: 'this-file', lineIndex: 0 }, { file: 'that-file', lineIndex: 0 } ]
+				occurences: [ { file: 'this-file', lineIndex: 18 }, { file: 'that-file', lineIndex: 23 } ]
 			},
 			{
 				lines: ['two'],
-				occurences: [ { file: 'this-file', lineIndex: 1 }, { file: 'that-file', lineIndex: 1 } ]
+				occurences: [ { file: 'this-file', lineIndex: 12 }, { file: 'that-file', lineIndex: 26 } ]
 			},
 		];
 		
 		var lines = selectLines(duplications).inFile('this-file');
 		
-		expect(lines).toEqual([ { line: 'one', lineIndex: 0 }, { line: 'two', lineIndex: 1 } ]);
+		expect(lines).toEqual([ { line: 'one', lineIndex: 18 }, { line: 'two', lineIndex: 12 } ]);
 	});
 });

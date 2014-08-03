@@ -3,6 +3,7 @@ var occurence = require('./occurence');
 var line = require('./line');
 var isString = require('../../utils/lib/string.utils');
 var lineShouldBeIgnored = require('./line.should.be.ignored');
+var nopLogger = require('../../utils/lib/nop.logger');
 
 var candidateFound = function (leftFile, leftLine, leftIndex, rightFile, rightLine, rightIndex) {
 	return !isString.empty(leftLine) && !isString.blanck(leftLine) &&
@@ -54,11 +55,7 @@ var duplicationsInFiles = function(leftFile, rightFile, fileProvider, duplicatio
 
 module.exports = {
 	
-	logger: {
-		start: function(filecount) {},
-		progress: function(leftFile, rightFile, leftIndex, rightIndex, duplications) {},
-		end: function() {},
-	},
+	logger: nopLogger,
 	
 	ignoring: function(patterns) {
 		this.patterns = patterns;
