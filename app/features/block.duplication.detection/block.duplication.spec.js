@@ -78,7 +78,7 @@ describe('Pion', function() {
         });
     });
 
-    it('can detect a block duplication expanded with empty lines', function(done) {
+    xit('can detect a block duplication expanded with empty lines', function(done) {
         var fileProvider = files(['one', 'two']).withContentsInLine([
             ['Hello',       'Hello'],
             ['Pion',        ''] ,
