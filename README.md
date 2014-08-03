@@ -1,6 +1,8 @@
 [![Travis Build Status](https://travis-ci.org/ericminio/pion.png?branch=master)](https://travis-ci.org/ericminio/pion)
 [![Coverage Status](https://coveralls.io/repos/ericminio/pion/badge.png?branch=master)](https://coveralls.io/r/ericminio/pion?branch=master)
 
+[![Coverage Status][coveralls-image]][coveralls-url]
+
 ## Work in progress
 
 Available:
