@@ -8,14 +8,14 @@ describe('Running Pion is easy :).', function() {
     
     describe('Pion', function() {
         
-        it('should have 0 duplicated lines', function() {       
+        it('should have 0 duplicated lines', function(done) {       
 			var folder = 'app/';
 			console.log('Scanning directory ' + folder + ' for lines duplication');
 			
             var fileProvider = require('./app/features/utils/lib/directory.file.provider');
             var detectDuplications = require('./app/features/duplication.detection/lib/pion.lines');
 			detectDuplications.logger = require('./app/features/utils/lib/console.logger');
-            var duplications = detectDuplications.ignoring(
+            detectDuplications.ignoring(
 				all([javascript, node, jasmine, [
 					
 					'inFiles: function(fileProvider) {',
@@ -27,19 +27,20 @@ describe('Running Pion is easy :).', function() {
 					/break/,
 					
 					]])
-            ).inFiles(fileProvider(folder));
-
-            expect(duplications.length).toEqual(0);
+            	).inFiles(fileProvider(folder), function(duplications) {
+	            expect(duplications.length).toEqual(0);
+				done();
+            });
         });
         
-        xit('should have 0 duplicated blocks', function() {
+        xit('should have 0 duplicated blocks', function(done) {
 			var folder = 'app/';
 			console.log('Scanning directory ' + folder + ' for blocks duplication');
 			
             var fileProvider = require('./app/features/utils/lib/directory.file.provider');
             var detectDuplications = require('./app/features/duplication.detection/lib/pion.blocks');
 			detectDuplications.logger = require('./app/features/utils/lib/console.logger');
-            var duplications = detectDuplications.ignoring(
+            detectDuplications.ignoring(
 				all([javascript, node, jasmine, [
 					
 					'inFiles: function(fileProvider) {',
@@ -51,11 +52,12 @@ describe('Running Pion is easy :).', function() {
 					/break/,
 					
 					]])
-            ).inFiles(fileProvider(folder));
-			
-			console.log(JSON.stringify(duplications, null, 4));
+            ).inFiles(fileProvider(folder), function(duplications) {
+				console.log(JSON.stringify(duplications, null, 4));
 
-            expect(duplications.length).toEqual(0);
+	            expect(duplications.length).toEqual(0);
+            	done();
+            });			
         });
     });
 

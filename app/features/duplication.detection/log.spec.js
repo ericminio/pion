@@ -1,7 +1,6 @@
 var duplications = require('./lib/pion.lines');
 var oneFile = require('../utils/lib/one.file.provider');
 var files = require('../utils/lib/files.provider');
-var files = require('../utils/lib/files.provider');
 
 describe('Pion', function() {
 
@@ -12,18 +11,20 @@ describe('Pion', function() {
 		expect(duplications.logger.end.toString()).toEqual((function() {}).toString());
 	});
 
-	it('logs start', function() {
+	it('logs start', function(done) {
 		spyOn(duplications.logger, 'start');
-		duplications.inFiles(files(['a', 'b']).withContents(['first', 'second']));
-		
-		expect(duplications.logger.start).toHaveBeenCalledWith(2);
+		duplications.inFiles(files(['a', 'b']).withContents(['first', 'second']), function() {
+			expect(duplications.logger.start).toHaveBeenCalledWith(2);
+			done();
+		});		
 	});
 
-	it('logs end', function() {
+	it('logs end', function(done) {
 		spyOn(duplications.logger, 'end');
-		duplications.inFiles(files(['a', 'b', 'c']).withContents(['one', 'two', 'three']));
-		
-		expect(duplications.logger.end).toHaveBeenCalled();
+		duplications.inFiles(files(['a', 'b', 'c']).withContents(['one', 'two', 'three']), function() {
+			expect(duplications.logger.end).toHaveBeenCalled();
+			done();
+		});		
 	});
 
 	describe('progress logging', function() {
@@ -32,21 +33,23 @@ describe('Pion', function() {
 			spyOn(duplications.logger, 'progress');
 		});
 		
-		it('logs progress from the first file', function() {
-			duplications.inFiles(files(['a']).withContents(['any']));
-		
-			expect(duplications.logger.progress).toHaveBeenCalledWith('a', 'a', 0, 0, []);
+		it('logs progress from the first file', function(done) {
+			duplications.inFiles(files(['a']).withContents(['any']), function() {
+				expect(duplications.logger.progress).toHaveBeenCalledWith('a', 'a', 0, 0, []);
+				done();
+			});		
 		});
 	
-		it('logs progress', function() {
-			duplications.inFiles(files(['a', 'b']).withContents(['any', 'any']));
-		
-			var expected = [ 
-				{ 
-					lines : [ 'any' ], 
-					occurences : [ { file : 'a', lineIndex : 0 }, { file : 'b', lineIndex : 0 } ]
-				}];
-			expect(duplications.logger.progress).toHaveBeenCalledWith('a', 'b', 0, 1, expected);
+		it('logs progress', function(done) {
+			duplications.inFiles(files(['a', 'b']).withContents(['any', 'any']), function() {
+				var expected = [ 
+					{ 
+						lines : [ 'any' ], 
+						occurences : [ { file : 'a', lineIndex : 0 }, { file : 'b', lineIndex : 0 } ]
+					}];
+				expect(duplications.logger.progress).toHaveBeenCalledWith('a', 'b', 0, 1, expected);
+				done();
+			});		
 		});
 	});	
 });

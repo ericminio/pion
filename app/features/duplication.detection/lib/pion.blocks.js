@@ -28,14 +28,15 @@ module.exports = {
 		return this;
 	},
 	
-	inFiles: function(fileProvider) {
+	inFiles: function(fileProvider, callback) {
 		if (this.logger != null) {
 			linesDuplications.logger = this.logger;
 		}
-		var duplicatedLines = linesDuplications.ignoring(this.patterns).inFiles(fileProvider);		
-		if (duplicatedLines.length < 2) { return []; }
+		linesDuplications.ignoring(this.patterns).inFiles(fileProvider, function(duplicatedLines) {
+			
+			if (duplicatedLines.length < 2) { callback([]); return; }
 		
-		var duplicatedBlocks = [];				
+			var duplicatedBlocks = [];				
 		
 		for(var i = 0; i < duplicatedLines.length; i++) {
 			
@@ -82,10 +83,10 @@ module.exports = {
 					lines: lines,
 					occurences: occurences
 				})
-			}		
-		}
-
-		return duplicatedBlocks;
+			}
+		
+			callback(duplicatedBlocks);
+		});		
 	}
 };
 

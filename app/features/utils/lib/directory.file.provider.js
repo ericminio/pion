@@ -4,7 +4,7 @@ var array = require('./array.utils');
 var filesInFolder = function(folder) {
 	
 	return {
-		files: function() {
+		files: function(callback) {
 			var filenames = [];
 
 			var files = fs.readdirSync(folder);
@@ -15,11 +15,13 @@ var filesInFolder = function(folder) {
 					filenames.push(folder + file);
 				}
 				if (stats.isDirectory()) {
-					filenames = filenames.concat(filesInFolder(folder + file + '/').files());
+					filesInFolder(folder + file + '/').files(function(array) {
+						filenames = filenames.concat(array);
+					});
 				}
 			});
 			
-			return filenames;
+			callback(filenames);
 		},
 		contentOf: function(filename) {
 			return fs.readFileSync(filename).toString();

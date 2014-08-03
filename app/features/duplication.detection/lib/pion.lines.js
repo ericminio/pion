@@ -65,27 +65,28 @@ module.exports = {
 		return this;
 	},
 	
-	inFiles: function(fileProvider) {
-		var filenames = fileProvider.files();
-
-		this.logger.start(filenames.length);
+	inFiles: function(fileProvider, callback) {
+		var self = this;
 		
-		var filecount = filenames.length;
-		var duplications = [];
-		for (var leftIndex = 0; leftIndex < filecount; leftIndex++) {
-			var leftFile = filenames[leftIndex];
+		fileProvider.files(function(filenames) {
+			self.logger.start(filenames.length);
+		
+			var filecount = filenames.length;
+			var duplications = [];
+			for (var leftIndex = 0; leftIndex < filecount; leftIndex++) {
+				var leftFile = filenames[leftIndex];
 			
-			for (var rightIndex = 0; rightIndex < filecount; rightIndex++) {				
-				var rightFile = filenames[rightIndex];
-				duplicationsInFiles(leftFile, rightFile, fileProvider, duplications, this.patterns);
+				for (var rightIndex = 0; rightIndex < filecount; rightIndex++) {				
+					var rightFile = filenames[rightIndex];
+					duplicationsInFiles(leftFile, rightFile, fileProvider, duplications, self.patterns);
 
-				this.logger.progress(leftFile, rightFile, leftIndex, rightIndex, duplications);
+					self.logger.progress(leftFile, rightFile, leftIndex, rightIndex, duplications);
+				}
 			}
-		}
 		
-		this.logger.end();
-		
-		return duplications;
+			self.logger.end();
+			callback(duplications);
+		});
 	}
 };
 

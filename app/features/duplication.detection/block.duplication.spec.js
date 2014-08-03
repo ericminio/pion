@@ -4,12 +4,18 @@ var files = require('../utils/lib/files.provider');
 
 describe('Pion', function() {
 
-	it('returns no block duplications when there is not even any line duplication', function() {
-		expect(blockDuplications.inFiles(oneFile('any-file').withContent('any content'))).toEqual([]);
+	it('returns no block duplications when there is not even any line duplication', function(done) {
+		blockDuplications.inFiles(oneFile('any-file').withContent('any content'), function(duplications) {
+			expect(duplications).toEqual([]);
+			done();
+		});
 	});
 	
-	it('returns no block duplications when there is not at least 2 lines duplication', function() {
-		expect(blockDuplications.inFiles(oneFile('any-file').withContent('duplication\nduplication'))).toEqual([]);
+	it('returns no block duplications when there is not at least 2 lines duplication', function(done) {
+		blockDuplications.inFiles(oneFile('any-file').withContent('duplication\nduplication'), function(duplications) {
+			expect(duplications).toEqual([]);
+			done();
+		});
 	});
 	
 	var onefile = 'block-file';
@@ -18,43 +24,53 @@ describe('Pion', function() {
 	var line3 = 'line 3';
 	var block = line1 + '\n' + line2 + '\n';
 
-	it('can detect a duplicated block of two lines in two files', function() {
-		var fileProvider = files(['a', 'b']).withContentsInLine([
-            [line1,     line1],
-            [line2,     line2]  ]);	
-		
-		expect(blockDuplications.inFiles(fileProvider)).toEqual([{ lines: [line1, line2],
-			occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
-		}]);
+	it('can detect a duplicated block of two lines in two files', function(done) {
+		blockDuplications.inFiles(files(['a', 'b']).withContents([block, block]), function(duplications) {
+			expect(duplications).toEqual([{ lines: [line1, line2],
+				occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
+			}]);
+			done();
+		});
 	});
 	
-	it('can detect a duplicated block of three lines in two files', function() {
+	it('can detect a duplicated block of three lines in two files', function(done) {
 		var block3 = line1 + '\n' + line2 + '\n' + line3 + '\n';
 
-		expect(blockDuplications.inFiles(files(['a', 'b']).withContents([block3, block3]))).toEqual([{ lines: [line1, line2, line3],
-			occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
-		}]);
+		blockDuplications.inFiles(files(['a', 'b']).withContents([block3, block3]), function(duplications) {
+			expect(duplications).toEqual([{ lines: [line1, line2, line3],
+				occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 } ]
+			}]);
+			done();
+		});
 	});
 	
-	it('can detect a duplicated block of three lines in three files', function() {
+	it('can detect a duplicated block of three lines in three files', function(done) {
 		var block3 = line1 + '\n' + line2 + '\n' + line3 + '\n';
 
-		expect(blockDuplications.inFiles(files(['a', 'b', 'c']).withContents([block3, block3, block3]))).toEqual([{ lines: [line1, line2, line3],
-			occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 }, { file: 'c', lineIndex: 0 } ]
-		}]);
+		blockDuplications.inFiles(files(['a', 'b', 'c']).withContents([block3, block3, block3]), function(duplications) {
+			expect(duplications).toEqual([{ lines: [line1, line2, line3],
+				occurences: [ { file: 'a', lineIndex: 0 }, { file: 'b', lineIndex: 0 }, { file: 'c', lineIndex: 0 } ]
+			}]);
+			done();
+		});
 	});
 	
-	it('can detect a duplicated block of two lines in one file', function() {
+	it('can detect a duplicated block of two lines in one file', function(done) {
 		var block2 = line1 + '\n' + line2 + '\n';
 		
-		expect(blockDuplications.inFiles(oneFile(onefile).withContent(block2 + block2))).toEqual([{
-			lines: [line1, line2],
-			occurences: [ { file: onefile, lineIndex: 0 }, { file: onefile, lineIndex: 2 } ]
-		}]);
+		blockDuplications.inFiles(oneFile(onefile).withContent(block2 + block2), function(duplications) {
+			expect(duplications).toEqual([{ lines: [line1, line2],
+				occurences: [ { file: onefile, lineIndex: 0 }, { file: onefile, lineIndex: 2 } ]
+			}]);
+			done();
+		});
 	});
 	
-	it('returns no block duplications when the 2 lines duplication can not be merged in one block', function() {
-		expect(blockDuplications.inFiles(oneFile('any-file').withContent('1\n2\n1\n3\n2'))).toEqual([]);
+	it('returns no block duplications when the 2 lines duplication can not be merged in one block', function(done) {
+		blockDuplications.inFiles(oneFile('any-file').withContent('1\n2\n1\n3\n2'), function(duplications) {
+			expect(duplications).toEqual([]);
+			done();
+		});
 	});
 	
 	it('can detect a block duplication not on the first duplication', function() {
