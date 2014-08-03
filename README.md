@@ -1,5 +1,7 @@
 [![Travis Build Status](https://travis-ci.org/ericminio/pion.png?branch=master)](https://travis-ci.org/ericminio/pion)
 
+[![Coverage Status](https://coveralls.io/repos/ericminio/pion/badge.png?branch=master)](https://coveralls.io/r/ericminio/pion?branch=master)
+
 ## Work in progress
 
 Available:
@@ -8,7 +10,7 @@ Available:
 
 Desires:
 * detection of duplicated blocks of exact duplicated lines
-* partial duplication
+* partial duplication of lines
 * from an online repository
 * compute duplication percentage
 * make it easy to use it to build a level for Yose
