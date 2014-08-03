@@ -1,5 +1,6 @@
 [![Travis Build Status](https://travis-ci.org/ericminio/pion.png?branch=master)](https://travis-ci.org/ericminio/pion)
 [![Coverage Status](https://coveralls.io/repos/ericminio/pion/badge.png?branch=master)](https://coveralls.io/r/ericminio/pion?branch=master)
+[ ![Codeship Status for ericminio/pion](https://www.codeship.io/projects/5838a7b0-fd86-0131-3861-7ac8d6a30f22/status?branch=master)](https://www.codeship.io/projects/29445)
 
 ## Work in progress
 
