@@ -2,9 +2,7 @@ var array = require('../../utils/lib/array.utils');
 
 var withLine = function(line) {
 	return function(duplication) { 
-		return array.hasOneItemIn(duplication.lines, function(item) { 
-			return item.trim() == line.trim(); 
-		}); 
+		return line.trim() == duplication.line.trim(); 
 	};
 };
 

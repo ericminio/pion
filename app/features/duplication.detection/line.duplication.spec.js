@@ -15,7 +15,7 @@ describe('Pion', function() {
 	
 	it('can detect one line duplicated two times in one file', function(done) {
 		linesDuplications.inFiles( oneFile(onefile).withContent(line + '\nanything\n' + line), function(duplications) {
-			expect(duplications).toEqual([ { lines: [line], occurences: [ firstFile_Line1, firstFile_Line3 ] } ]);
+			expect(duplications).toEqual([ { line: line, occurences: [ firstFile_Line1, firstFile_Line3 ] } ]);
 			done();
 		});
 	});
@@ -24,7 +24,7 @@ describe('Pion', function() {
 		var content = 'anything\n' + line + '\n' + line + '\n' + line;
 		
 		linesDuplications.inFiles(oneFile(onefile).withContent(content), function(duplications) {
-			expect(duplications).toEqual([ { lines: [line], occurences: [ firstFile_Line2, firstFile_Line3, firstFile_Line4 ] } ]);
+			expect(duplications).toEqual([ { line: line, occurences: [ firstFile_Line2, firstFile_Line3, firstFile_Line4 ] } ]);
 			done();
 		});
 	});
@@ -34,7 +34,7 @@ describe('Pion', function() {
 	
 	it('can detect one line duplicated two times in two files', function(done) {
 		linesDuplications.inFiles(files([onefile, secondfile]).withContents([line, line]), function(duplications) {
-			expect(duplications).toEqual([ { lines: [line], occurences: [ firstFile_Line1, secondFile_Line1 ] } ] );
+			expect(duplications).toEqual([ { line: line, occurences: [ firstFile_Line1, secondFile_Line1 ] } ] );
 			done();
 		});
 	});
@@ -44,7 +44,7 @@ describe('Pion', function() {
 
 	it('can detect one line duplicated three times in three files', function(done) {
 		linesDuplications.inFiles(files([onefile, secondfile, thirdfile]).withContents([line, line, line]), function(duplications) {
-			expect(duplications).toEqual([{ lines: [line], occurences: [ firstFile_Line1, secondFile_Line1, thirdFile_Line1 ] }])
+			expect(duplications).toEqual([{ line: line, occurences: [ firstFile_Line1, secondFile_Line1, thirdFile_Line1 ] }])
 			done();
 		});
 	});
@@ -59,14 +59,14 @@ describe('Pion', function() {
 		linesDuplications.inFiles(fileProvider, function(duplications) {
 			expect(duplications).toEqual([
 				{
-					lines: ['first item'],
+					line: 'first item',
 					occurences: [
 						{ file: onefile, lineIndex: 0 },
 						{ file: onefile, lineIndex: 2 }
 					]
 				},
 				{
-					lines: ['second item'],
+					line: 'second item',
 					occurences: [
 						{ file: onefile, lineIndex: 1 },
 						{ file: secondfile, lineIndex: 0 },
@@ -74,7 +74,7 @@ describe('Pion', function() {
 					]
 				},
 				{
-					lines: ['third item'],
+					line: 'third item',
 					occurences: [
 						{ file: secondfile, lineIndex: 1 },
 						{ file: secondfile, lineIndex: 2 },
@@ -83,7 +83,7 @@ describe('Pion', function() {
 					]
 				},
 				{
-					lines: ['fourth item'],
+					line: 'fourth item',
 					occurences: [
 						{ file: thirdfile, lineIndex: 3 },
 						{ file: thirdfile, lineIndex: 4 }
@@ -105,7 +105,7 @@ describe('Pion', function() {
 	
 	it('trims lines before comparing', function(done) {
 		linesDuplications.inFiles(oneFile('space').withContent('hello world\n' + '  hello world\n'), function(duplications) {
-			expect(duplications).toEqual([{ lines: ['hello world'],
+			expect(duplications).toEqual([{ line: 'hello world',
 				occurences: [
 					{ file: 'space', lineIndex: 0 },
 					{ file: 'space', lineIndex: 1 }
@@ -117,7 +117,7 @@ describe('Pion', function() {
 
 	it('trims and suppresses tabs in lines before comparing', function(done) {
 		linesDuplications.inFiles(oneFile('tabs').withContent('love you\n' + '\t\t  love you  \n'), function(duplications) {
-			expect(duplications).toEqual([{ lines: ['love you'],
+			expect(duplications).toEqual([{ line: 'love you',
 				occurences: [
 					{ file: 'tabs', lineIndex: 0 },
 					{ file: 'tabs', lineIndex: 1 }

@@ -5,7 +5,7 @@ describe('Pion', function() {
 	it('can select lines of a file in one duplication', function() {
 	
 		var duplication = {
-			lines: ['line1'],
+			line: 'line1',
 			occurences: [ { file: 'this-file', lineIndex: 0 }, { file: 'that-file', lineIndex: 0 } ]
 		};
 		
@@ -18,11 +18,11 @@ describe('Pion', function() {
 	
 		var duplications = [
 			{
-				lines: ['one'],
+				line: 'one',
 				occurences: [ { file: 'this-file', lineIndex: 18 }, { file: 'that-file', lineIndex: 23 } ]
 			},
 			{
-				lines: ['two'],
+				line: 'two',
 				occurences: [ { file: 'this-file', lineIndex: 12 }, { file: 'that-file', lineIndex: 26 } ]
 			},
 		];

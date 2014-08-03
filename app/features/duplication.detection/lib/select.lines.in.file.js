@@ -7,7 +7,7 @@ module.exports = function(duplications) {
 			array.forEach(duplications, function(duplication) {
 				array.forEach(duplication.occurences, function(occurence) {
 					if (occurence.file == file) {
-						selected.push({ line: duplication.lines[0], lineIndex: occurence.lineIndex });
+						selected.push({ line: duplication.line, lineIndex: occurence.lineIndex });
 					}
 				});
 			});

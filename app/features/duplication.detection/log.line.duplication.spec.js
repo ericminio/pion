@@ -44,7 +44,7 @@ describe('When detecting lines duplication, Pion', function() {
 			duplications.inFiles(files(['a', 'b']).withContents(['any', 'any']), function() {
 				var expected = [ 
 					{ 
-						lines : [ 'any' ], 
+						line : 'any', 
 						occurences : [ { file : 'a', lineIndex : 0 }, { file : 'b', lineIndex : 0 } ]
 					}];
 				expect(duplications.logger.progress).toHaveBeenCalledWith('a', 'b', 0, 1, expected);
