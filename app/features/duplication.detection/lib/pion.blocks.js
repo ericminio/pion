@@ -33,60 +33,57 @@ module.exports = {
 			linesDuplications.logger = this.logger;
 		}
 		linesDuplications.ignoring(this.patterns).inFiles(fileProvider, function(duplicatedLines) {
-			
 			if (duplicatedLines.length < 2) { callback([]); return; }
-		
-			var duplicatedBlocks = [];				
-		
-		for(var i = 0; i < duplicatedLines.length; i++) {
+			var duplicatedBlocks = [];					
+			for(var i = 0; i < duplicatedLines.length; i++) {
 			
-			var candidate = duplicatedLines[i];	
-			var blocks = [];	
-			array.forEach(candidate.occurences, function(candidateOccurence) {
+				var candidate = duplicatedLines[i];	
+				var blocks = [];	
+				array.forEach(candidate.occurences, function(candidateOccurence) {
 			
-				var currentFile = candidateOccurence.file;
-				var linesInCurrentFile = selectLines(duplicatedLines).inFile(currentFile);
-				order(linesInCurrentFile).byLineIndex();
-				linesInCurrentFile = keepsOnlyLinesIn(linesInCurrentFile).withLineIndexGreaterOrEqualTo(candidateOccurence.lineIndex);
-				linesInCurrentFile = keepsOnlyAdjacentLines(linesInCurrentFile);
+					var currentFile = candidateOccurence.file;
+					var linesInCurrentFile = selectLines(duplicatedLines).inFile(currentFile);
+					order(linesInCurrentFile).byLineIndex();
+					linesInCurrentFile = keepsOnlyLinesIn(linesInCurrentFile).withLineIndexGreaterOrEqualTo(candidateOccurence.lineIndex);
+					linesInCurrentFile = keepsOnlyAdjacentLines(linesInCurrentFile);
 									
-				if (linesInCurrentFile.length > 1) {
+					if (linesInCurrentFile.length > 1) {
 				
-					var mergedLines = [];
-					for (var index=0; index < linesInCurrentFile.length; index++) {
-						mergedLines.push(linesInCurrentFile[index].line);
-					}
+						var mergedLines = [];
+						for (var index=0; index < linesInCurrentFile.length; index++) {
+							mergedLines.push(linesInCurrentFile[index].line);
+						}
 
-					var block = { lines: mergedLines, occurences: candidateOccurence };		
+						var block = { lines: mergedLines, occurences: candidateOccurence };		
 				
-					blocks.push(block);		
-				}
-			});
-		
-			if (blocks.length > 1) {
-			
-				var occurences = [];
-				var min = 1e6;
-				array.forEach(blocks, function(block) {
-					if (block.lines.length < min) {
-						min = block.lines.length;
+						blocks.push(block);		
 					}
-					occurences = occurences.concat(block.occurences);
 				});
-			
-				var lines = [];
-				for (var index=0 ; index < min; index ++) {
-					lines.push(blocks[0].lines[index]);
-				}
-			
-				duplicatedBlocks.push({
-					lines: lines,
-					occurences: occurences
-				})
-			}
 		
+				if (blocks.length > 1) {
+			
+					var occurences = [];
+					var min = 1e6;
+					array.forEach(blocks, function(block) {
+						if (block.lines.length < min) {
+							min = block.lines.length;
+						}
+						occurences = occurences.concat(block.occurences);
+					});
+			
+					var lines = [];
+					for (var index=0 ; index < min; index ++) {
+						lines.push(blocks[0].lines[index]);
+					}
+			
+					duplicatedBlocks.push({
+						lines: lines,
+						occurences: occurences
+					})
+				}
+			}
 			callback(duplicatedBlocks);
-		});		
+		});	
 	}
 };
 

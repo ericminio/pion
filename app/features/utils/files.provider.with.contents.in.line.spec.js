@@ -11,8 +11,11 @@ describe('Files provider with contents in line builder', function() {
 			]);		
 	});
 
-	it('provides the expected files', function() {
-		expect(provider.files()).toEqual(['a', 'b', 'c']);
+	it('provides the expected files', function(done) {
+		provider.files(function(filenames) {
+			expect(filenames).toEqual(['a', 'b', 'c']);
+			done();
+		});
 	});
 
 

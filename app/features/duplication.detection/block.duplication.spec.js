@@ -73,7 +73,7 @@ describe('Pion', function() {
 		});
 	});
 	
-	it('can detect a block duplication not on the first duplication', function() {
+	it('can detect a block duplication not on the first duplication', function(done) {
 		var fileProvider = files(['a', 'b']).withContentsInLine([
             [line1,     	line1],
 			['anything', 	'something'],			
@@ -82,9 +82,11 @@ describe('Pion', function() {
 			['',            line3] 
 		]);	
 		
-		expect(blockDuplications.inFiles(fileProvider)).toEqual([{ lines: [line2, line3],
-			occurences: [ { file: 'a', lineIndex: 2 }, { file: 'b', lineIndex: 3 } ]
-		}]);
-		
+		blockDuplications.inFiles(fileProvider, function(duplications) {
+			expect(duplications).toEqual([{ lines: [line2, line3],
+				occurences: [ { file: 'a', lineIndex: 2 }, { file: 'b', lineIndex: 3 } ]
+			}]);
+			done();
+		});
 	});
 });
