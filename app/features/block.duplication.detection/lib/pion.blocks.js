@@ -1,6 +1,4 @@
 var array = require('../../utils/lib/array.utils');
-var occurence = require('../../common/lib/occurence');
-var line = require('../../common/lib/line');
 var linesDuplications = require('../../line.duplication.detection/lib/pion.lines');
 
 var selectLines = require('./select.lines.in.file');

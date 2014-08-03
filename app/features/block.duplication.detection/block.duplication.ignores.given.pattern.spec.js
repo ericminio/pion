@@ -6,7 +6,7 @@ describe('Pion block duplication ignoring pattern', function() {
 	it('is forwarded to the line duplication detector', function(done) {
 		var any = [ 'anything' ];
 
-		blockDuplications.ignoring(any).inFiles(oneFile('a-file').withContent('content'), function(duplications) {
+		blockDuplications.ignoring(any).inFiles(oneFile('a-file').withContent('content'), function() {
 			expect(blockDuplications.linesDuplications.patterns).toEqual(any);
 			done();
 		});
