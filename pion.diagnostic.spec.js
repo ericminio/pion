@@ -30,8 +30,8 @@ describe('Running Pion is easy :).', function() {
                     
                     ]])
                 ).inFiles(fileProvider(folder), function(duplications) {
-                expect(duplications.length).toEqual(0);
-                done();
+                    expect(duplications.length).toEqual(0);
+                    done();
             });
         });
         
