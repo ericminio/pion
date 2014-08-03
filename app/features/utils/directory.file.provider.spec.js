@@ -7,14 +7,17 @@ describe('Directory file provider', function() {
 
 	var filenames;
 	
-	beforeEach(function() {	
+	beforeEach(function(done) {	
 		clean.folder('test-data/');		
 		clean.folder('test-data/any');		
 		havingInFolder('test-data/').theFileWithName('a-file').withContent('aaa');
 		havingInFolder('test-data/any').theFileWithName('c-file').withContent('ccc');
 		havingInFolder('test-data/').theFileWithName('b-file').withContent('bbb');
 
-		filenames = fileProvider('test-data/').files();
+		fileProvider('test-data/').files(function(array) {
+			filenames = array;
+			done();
+		});
 	});
 	
 	it('takes sub-directories into account', function() {
