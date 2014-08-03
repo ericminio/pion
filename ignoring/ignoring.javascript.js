@@ -1,7 +1,8 @@
 module.exports = [
+    ')',
+    
 	'});',
 	']);',
-	
 	'{',
 
 	'}',
@@ -15,4 +16,5 @@ module.exports = [
 
 	'return {',
 	'return this;',
+    /break/
 ];

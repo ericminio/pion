@@ -62,7 +62,7 @@ describe('Pion', function() {
     });
     
     it('can detect a block duplication not on the first duplication', function(done) {
-        var fileProvider = files(['a', 'b']).withContentsInLine([
+        var filesWithADuplicatedBlockOnSecondDuplication = files(['a', 'b']).withContentsInLine([
             [line1,         line1],
             ['anything',    'something'],           
             [line2,         'else'],
@@ -70,7 +70,7 @@ describe('Pion', function() {
             ['',            line3] 
         ]); 
         
-        blockDuplications.inFiles(fileProvider, function(duplications) {
+        blockDuplications.inFiles(filesWithADuplicatedBlockOnSecondDuplication, function(duplications) {
             expect(duplications).toEqual([{ lines: [line2, line3],
                 occurences: [ { file: 'a', lineIndex: 2 }, { file: 'b', lineIndex: 3 } ]
             }]);
@@ -78,14 +78,14 @@ describe('Pion', function() {
         });
     });
 
-    xit('can detect a block duplication expanded with empty lines', function(done) {
-        var fileProvider = files(['one', 'two']).withContentsInLine([
+    it('can detect a block duplication expanded with empty lines', function(done) {
+        var filesWithAnExpandedDuplicatedBlock = files(['one', 'two']).withContentsInLine([
             ['Hello',       'Hello'],
             ['Pion',        ''] ,
             ['',            'Pion'] 
         ]); 
         
-        blockDuplications.inFiles(fileProvider, function(duplications) {
+        blockDuplications.inFiles(filesWithAnExpandedDuplicatedBlock, function(duplications) {
             expect(duplications).toEqual([{ lines: ['Hello', 'Pion'],
                 occurences: [ { file: 'one', lineIndex: 0 }, { file: 'two', lineIndex: 0 } ]
             }]);

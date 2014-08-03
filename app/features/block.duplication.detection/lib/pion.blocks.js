@@ -32,7 +32,7 @@ var blockDuplications = {
 					order(linesInCurrentFile).byLineIndex();
 					linesInCurrentFile = keepsOnlyLinesIn(linesInCurrentFile)
                                             .withLineIndexGreaterOrEqualTo(candidateOccurence.lineIndex);
-					linesInCurrentFile = keepsOnlyAdjacentLines(linesInCurrentFile);
+					linesInCurrentFile = keepsOnlyAdjacentLines(linesInCurrentFile, fileProvider.contentOf(currentFile));
 									
 					if (linesInCurrentFile.length > 1) {
 				

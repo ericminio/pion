@@ -14,9 +14,7 @@ var pion = [
     'occurences: [',
     'return duplications;',
     'expect(duplications).toEqual([',
-
-    /break/,
-];
+    ];
 
 describe('Running Pion is easy :).', function() {
     
@@ -26,7 +24,7 @@ describe('Running Pion is easy :).', function() {
             var folder = 'app/';
             console.log('Scanning directory ' + folder + ' for lines duplication');            
             var fileProvider = require('./app/features/utils/lib/directory.file.provider');
-            var detectDuplications = require('./app/features/duplication.detection/lib/pion.lines');
+            var detectDuplications = require('./app/features/line.duplication.detection/lib/pion.lines');
             detectDuplications.logger = require('./app/features/utils/lib/console.logger');
             
             detectDuplications.ignoring( all([javascript, node, jasmine, pion]) )
@@ -42,7 +40,7 @@ describe('Running Pion is easy :).', function() {
             console.log('Scanning directory ' + folder + ' for blocks duplication');
             
             var fileProvider = require('./app/features/utils/lib/directory.file.provider');
-            var detectDuplications = require('./app/features/duplication.detection/lib/pion.blocks');
+            var detectDuplications = require('./app/features/block.duplication.detection/lib/pion.blocks');
             detectDuplications.logger = require('./app/features/utils/lib/console.logger');
             detectDuplications.ignoring( all([javascript, node, jasmine, pion]) )
                               .inFiles(fileProvider(folder), function(duplications) {

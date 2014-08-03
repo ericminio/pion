@@ -9,7 +9,7 @@ describe('Keeps only adjacent lines', function() {
 		expect(filtered).toEqual([ { lineIndex: 0 }, { lineIndex: 1 } ]);
 	});
 	
-	it('returns the single element of a colelction with a single element', function() {
+	it('returns the single element of a collection with a single element', function() {
 		expect(keepsOnlyAdjacentLines([ { lineIndex: 18 } ])).toEqual([ { lineIndex: 18 } ]);
 	});
 	
@@ -17,4 +17,21 @@ describe('Keeps only adjacent lines', function() {
 		expect(keepsOnlyAdjacentLines([ { lineIndex: 18 }, { lineIndex: 19 }, { lineIndex: 20 } ]))
 			.toEqual([ { lineIndex: 18 }, { lineIndex: 19 }, { lineIndex: 20 } ]);
 	});
+    
+    describe('When block is expanded', function() {
+        
+        var occurences = [ {lineIndex: 0}, {lineIndex: 2} ];
+
+        it('ignores empty lines', function() {
+            var ignoringEmptyLines = keepsOnlyAdjacentLines(occurences, "hello\n\n\nworld");
+        
+            expect(ignoringEmptyLines).toEqual([ { lineIndex: 0 }, { lineIndex: 2 } ]);
+        });
+
+        it('considers lines separated by blanck lines as adjacent', function() {
+            var ignoringBlankLines = keepsOnlyAdjacentLines(occurences, "hello\n  \t   \nworld");
+        
+            expect(ignoringBlankLines).toEqual([ { lineIndex: 0 }, { lineIndex: 2 } ]);
+        });
+    });    
 });
