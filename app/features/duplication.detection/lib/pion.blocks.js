@@ -4,22 +4,11 @@ var line = require('./line');
 var linesDuplications = require('./pion.lines');
 var theContent = require('./block.detector');
 
-var addInCollectionIfNotPresent = function(collection, item) {
-	itemAlreadyPresent = false;
-	for (var index = 0; index < collection.length; index++) {
-		if (collection[index] == item) {
-			itemAlreadyPresent = true;
-		}
-	}
-	if (! itemAlreadyPresent) {
-		collection.push(item); 
-	}
-};
-
 var selectLines = require('./select.lines.in.file');
 var order = require('./order');
 var keepsOnlyLinesIn = require('./keeps.only.lines.in');
 var keepsOnlyAdjacentLines = require('./keeps.only.adjacent.lines');
+var containingLines = require('./containing.lines.matcher');
 
 module.exports = {
 	
@@ -76,10 +65,12 @@ module.exports = {
 						lines.push(blocks[0].lines[index]);
 					}
 			
-					duplicatedBlocks.push({
-						lines: lines,
-						occurences: occurences
-					})
+					if (! array.hasOneItemIn(duplicatedBlocks, containingLines(lines)) ) {
+						duplicatedBlocks.push({
+							lines: lines,
+							occurences: occurences
+						});
+					}					
 				}
 			}
 			callback(duplicatedBlocks);
