@@ -2,13 +2,13 @@ var duplications = require('./lib/pion.lines');
 var oneFile = require('../utils/lib/one.file.provider');
 var files = require('../utils/lib/files.provider');
 
-describe('Pion', function() {
+describe('When detecting lines duplication, Pion', function() {
 
 	it('has a default logger that does nothing', function() {
 		expect(duplications.logger).not.toEqual(undefined);
-		expect(duplications.logger.start.toString()).toEqual((function(filecount) {}).toString());
-		expect(duplications.logger.progress.toString()).toEqual((function(leftFile, rightFile, leftIndex, rightIndex, duplications) {}).toString());
-		expect(duplications.logger.end.toString()).toEqual((function() {}).toString());
+		expect(duplications.logger.start).not.toEqual(undefined);
+		expect(duplications.logger.progress).not.toEqual(undefined);
+		expect(duplications.logger.end).not.toEqual(undefined);
 	});
 
 	it('logs start', function(done) {
@@ -27,7 +27,7 @@ describe('Pion', function() {
 		});		
 	});
 
-	describe('progress logging', function() {
+	describe('> Progress logging:', function() {
 	
 		beforeEach(function() {
 			spyOn(duplications.logger, 'progress');

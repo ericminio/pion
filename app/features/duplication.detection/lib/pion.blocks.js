@@ -9,10 +9,10 @@ var keepsOnlyLinesIn = require('./keeps.only.lines.in');
 var keepsOnlyAdjacentLines = require('./keeps.only.adjacent.lines');
 var containingLines = require('./containing.lines.matcher');
 
-module.exports = {
+var blockDuplications = {
 	
 	ignoring: function(patterns) {
-		this.patterns = patterns || [];
+		this.patterns = patterns;
 		return this;
 	},
 	
@@ -78,3 +78,5 @@ module.exports = {
 };
 
 
+module.exports = blockDuplications;
+module.exports.linesDuplications = linesDuplications;

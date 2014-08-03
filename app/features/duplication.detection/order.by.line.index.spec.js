@@ -15,4 +15,11 @@ describe('Order by lineIndex', function() {
 		
 		expect(collection).toEqual([ { lineIndex: 0 }, { lineIndex: 1 }, { lineIndex: 2 } ]);
 	});
+	
+	it('keeps unchanged two items with the same index', function() {
+		var collection = [ { lineIndex: 0, field: 'one' }, { lineIndex: 0, field: 'two' } ];
+		order(collection).byLineIndex();
+		
+		expect(collection).toEqual([ { lineIndex: 0, field: 'one' }, { lineIndex: 0, field: 'two' } ]);
+	});
 });
