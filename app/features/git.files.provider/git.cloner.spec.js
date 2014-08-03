@@ -16,7 +16,7 @@ describe('Git cloner,', function() {
 	
 	describe('when the repository exists,', function() {
 		
-		var repo = './app/features/git.files.provider/data/repo-with-one-file';
+		var repo = 'https://github.com/ericminio/pion';
 		var error;
 		
 		beforeEach(function(done) {
