@@ -77,4 +77,19 @@ describe('Pion', function() {
 			done();
 		});
 	});
+
+	it('can detect a block duplication expanded with empty lines', function(done) {
+		var fileProvider = files(['one', 'two']).withContentsInLine([
+            ['Hello',     	'Hello'],
+            ['Pion',     	''] ,
+			['',            'Pion'] 
+		]);	
+		
+		blockDuplications.inFiles(fileProvider, function(duplications) {
+			expect(duplications).toEqual([{ lines: ['Hello', 'Pion'],
+				occurences: [ { file: 'one', lineIndex: 0 }, { file: 'two', lineIndex: 0 } ]
+			}]);
+			done();
+		});
+	});
 });
