@@ -7,9 +7,6 @@ describe('Git cloner,', function() {
 	beforeEach(function(done) {
 		var exec = require('child_process').exec;
 		var rmdir = exec('rm -rf ' + cloneFolder, function(rmerror, stdout, stderr) {
-			if (rmerror !== null) {
-				console.log('exec error: ' + error);
-			}
 			done();
 		});
 	});
