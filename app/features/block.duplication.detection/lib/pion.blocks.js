@@ -1,7 +1,7 @@
 var array = require('../../utils/lib/array.utils');
-var occurence = require('./occurence');
-var line = require('./line');
-var linesDuplications = require('./pion.lines');
+var occurence = require('../../common/lib/occurence');
+var line = require('../../common/lib/line');
+var linesDuplications = require('../../line.duplication.detection/lib/pion.lines');
 
 var selectLines = require('./select.lines.in.file');
 var order = require('./order');
@@ -32,7 +32,8 @@ var blockDuplications = {
 					var currentFile = candidateOccurence.file;
 					var linesInCurrentFile = selectLines(duplicatedLines).inFile(currentFile);
 					order(linesInCurrentFile).byLineIndex();
-					linesInCurrentFile = keepsOnlyLinesIn(linesInCurrentFile).withLineIndexGreaterOrEqualTo(candidateOccurence.lineIndex);
+					linesInCurrentFile = keepsOnlyLinesIn(linesInCurrentFile)
+                                            .withLineIndexGreaterOrEqualTo(candidateOccurence.lineIndex);
 					linesInCurrentFile = keepsOnlyAdjacentLines(linesInCurrentFile);
 									
 					if (linesInCurrentFile.length > 1) {

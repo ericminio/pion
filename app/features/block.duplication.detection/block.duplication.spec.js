@@ -1,7 +1,7 @@
 var blockDuplications = require('./lib/pion.blocks');
 var oneFile = require('../utils/lib/one.file.provider');
 var files = require('../utils/lib/files.provider');
-var isEmptyDuplications = require('./is.empty.duplications');
+var isEmptyDuplications = require('../common/is.empty.duplications');
 
 describe('Pion', function() {
 

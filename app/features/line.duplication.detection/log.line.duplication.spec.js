@@ -4,7 +4,7 @@ var files = require('../utils/lib/files.provider');
 
 describe('When detecting lines duplication, Pion', function() {
 
-	it('has a default logger that does nothing', function() {
+	it('has a default logger', function() {
 		expect(duplications.logger).not.toEqual(undefined);
 		expect(duplications.logger.start).not.toEqual(undefined);
 		expect(duplications.logger.progress).not.toEqual(undefined);

@@ -1,5 +1,5 @@
 module.exports = function(line, patterns) {
-	if (patterns == undefined) { return false; }
+	if (patterns === undefined) { return false; }
 	if (!Array.isArray(patterns)) { return false; }
 	
 	var ignore = false;

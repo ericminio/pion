@@ -18,7 +18,7 @@ module.exports = function(filenames) {
 		withContentsInLine: function(contentsInLine) {
 			
 			var contents = [];
-			for (var i = 0; i < contentsInLine[0].length ; i++) {
+			for (var fileIndex = 0; fileIndex < contentsInLine[0].length ; fileIndex++) {
 				contents.push('');
 			}			
 			for (var i = 0; i < contentsInLine.length ; i++) {

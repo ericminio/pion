@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "devDependencies": {
     "istanbul": "^0.3.0",
-    "jasmine-node": "~1.13.1"
+    "jasmine-node": "~1.13.1",
+    "jshint": "^2.5.2"
   },
   "engines": {
     "node": "0.8.x",

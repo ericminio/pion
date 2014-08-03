@@ -1,7 +1,7 @@
 var linesDuplications = require('./lib/pion.lines');
 var oneFile = require('../utils/lib/one.file.provider');
 var files = require('../utils/lib/files.provider');
-var isEmptyDuplications = require('./is.empty.duplications');
+var isEmptyDuplications = require('../common/is.empty.duplications');
 
 describe('Pion', function() {
 
@@ -44,7 +44,7 @@ describe('Pion', function() {
 
 	it('can detect one line duplicated three times in three files', function(done) {
 		linesDuplications.inFiles(files([onefile, secondfile, thirdfile]).withContents([line, line, line]), function(duplications) {
-			expect(duplications).toEqual([{ line: line, occurences: [ firstFile_Line1, secondFile_Line1, thirdFile_Line1 ] }])
+			expect(duplications).toEqual([{ line: line, occurences: [ firstFile_Line1, secondFile_Line1, thirdFile_Line1 ] }]);
 			done();
 		});
 	});

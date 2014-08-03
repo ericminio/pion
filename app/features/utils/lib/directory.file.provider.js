@@ -26,7 +26,7 @@ var filesInFolder = function(folder) {
 		contentOf: function(filename) {
 			return fs.readFileSync(filename).toString();
 		},
-	}
+	};
 };
 
 module.exports = filesInFolder;
