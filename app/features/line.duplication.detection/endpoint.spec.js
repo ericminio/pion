@@ -4,24 +4,95 @@ describe('Line duplication detection endpoint', function() {
     
     var request, response;
     
-    beforeEach(function() {
+    beforeEach(function(done) {
         response = { writeHead: function(){}, write: function(){} };
+        
+		var exec = require('child_process').exec;
+		var rmdir = exec('rm -rf ./cloned', function(rmerror, stdout, stderr) {
+			done();
+		});
     });
     
     it('returns json', function(done) {
         spyOn(response, 'writeHead');
-        endpoint(request, response, function() {
-            expect(response.writeHead).toHaveBeenCalledWith(200, {'Content-Type': 'application/json'});
+        endpoint({ url: '?repository=any-repo' }, response, function() {
+            expect(response.writeHead).toHaveBeenCalledWith(200, {'Content-Type': 'application/json'} );
             done();
         });
     });
     
-    it('returns in-construction message', function(done) {
-        spyOn(response, 'write');
+    it('uses the git cloner', function() {
+        expect(endpoint.cloner).toEqual(require('../git.files.provider/lib/git.cloner'));
+    });
+    
+    it('clones the requested repo', function(done) {
+        var cloner = { clone: function(repo, folder, afterClone) { afterClone('stop here'); } };
+        spyOn(cloner, 'clone').andCallThrough();        
+        endpoint.cloner = cloner;
         
-        endpoint(request, response, function() {
-            expect(response.write).toHaveBeenCalledWith( JSON.stringify({ status: 'in construction' }) );
+        endpoint({ url: '?repository=any-repo' }, response, function() {
+            expect(cloner.clone).toHaveBeenCalledWith('any-repo', './cloned', jasmine.any(Function));
             done();
         });
     });
+    
+    it('searches duplications in the cloned repository', function(done) {
+        var cloner = { 
+            clone: function(repo, folder, afterClone) { 
+                var clean = require('../utils/lib/clean');
+                clean.folder('cloned/');	
+                var fs = require('fs');
+                fs.writeFileSync('./cloned/one-file', 'one line\none line');
+                afterClone(); 
+            } 
+        };
+        endpoint.cloner = cloner;
+        spyOn(response, 'write');
+        var status = {
+            repository: 'any-repo',
+            duplications: [ 
+                { 
+                    line: 'one line', 
+                    occurences: [ 
+                        { file: './cloned/one-file', lineIndex: 0}, 
+                        { file: './cloned/one-file', lineIndex: 1 } 
+                    ] 
+                } 
+            ]
+        };
+        
+        endpoint({ url: '?repository=any-repo' }, response, function() {
+            expect(response.write).toHaveBeenCalledWith(JSON.stringify(status));
+            done();
+        });
+    });
+    
+    it('reports error if any', function(done) {
+        var cloner = { clone: function(repo, folder, afterClone) { afterClone('something unexpected happened'); } };
+        endpoint.cloner = cloner;
+        spyOn(response, 'write');
+        var status = {
+            repository: 'any-repo',
+            error: 'something unexpected happened'
+        };
+        
+        endpoint({ url: '?repository=any-repo' }, response, function() {
+            expect(response.write).toHaveBeenCalledWith(JSON.stringify(status));
+            done();
+        });
+    });
+    
+    it('reports missing parameter', function(done) {
+        spyOn(response, 'write');
+        var status = {
+            repository: undefined,
+            error: 'missing repository parameter'
+        };
+        
+        endpoint({ url: '' }, response, function() {
+            expect(response.write).toHaveBeenCalledWith(JSON.stringify(status));
+            done();
+        });
+    });
+    
 });

@@ -1,4 +1,4 @@
-var cloneGitRepository = require('./lib/git.cloner');
+var cloner = require('./lib/git.cloner');
 
 describe('Git cloner,', function() {
 
@@ -17,7 +17,7 @@ describe('Git cloner,', function() {
 		var error;
 		
 		beforeEach(function(done) {
-			cloneGitRepository(repo, cloneFolder, function(err) {
+			cloner.clone(repo, cloneFolder, function(err) {
 				error = err;
 				done();			
 			});		
@@ -37,7 +37,7 @@ describe('Git cloner,', function() {
 	});
 
 	it('returns error when the repository does not exist', function(done) {
-		cloneGitRepository('./anything/but/an/existing/repository', cloneFolder, function(err) {
+		cloner.clone('./anything/but/an/existing/repository', cloneFolder, function(err) {
 			expect(err).not.toEqual(undefined);
 			done();			
 		});		
