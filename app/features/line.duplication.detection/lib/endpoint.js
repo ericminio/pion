@@ -4,18 +4,8 @@ var all = require('../../../../ignoring/ignoring');
 var javascript = require('../../../../ignoring/ignoring.javascript');
 var node = require('../../../../ignoring/ignoring.node');
 var jasmine = require('../../../../ignoring/ignoring.jasmine');
-var pion = [
-    'ignoring: function(patterns) {',
-    'this.patterns = patterns;',
-    'inFiles: function(fileProvider, callback) {',
-    'contentOf: function(filename) {',
-    'module.exports = function(collection) {',
-    'return function(item) {',
-
-    'occurences: [',
-    'return duplications;',
-    'expect(duplications).toEqual([',
-    ];
+var csharp = require('../../../../ignoring/ignoring.csharp');
+var nunit = require('../../../../ignoring/ignoring.nunit');
 
 var endpoint = function(request, response, callback) {
     response.writeHead(200, {'Content-Type': 'application/json'});
@@ -42,7 +32,8 @@ var endpoint = function(request, response, callback) {
         var fileProvider = require('../../utils/lib/directory.file.provider');
         var detectDuplications = require('./pion.lines');
         
-        detectDuplications.inFiles(fileProvider('./cloned/'), function(duplications) {
+        detectDuplications.ignoring( all([javascript, node, jasmine, csharp, nunit]) )
+                          .inFiles(fileProvider('./cloned/'), function(duplications) {
             status.duplicationCount = duplications.length,
             status.duplications = duplications;
             response.write( JSON.stringify(status) );
