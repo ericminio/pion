@@ -10,9 +10,11 @@ describe('Directory file provider', function() {
 	beforeEach(function(done) {	
 		clean.folder('test-data/');		
 		clean.folder('test-data/any');		
+		clean.folder('test-data/.git');		
 		havingInFolder('test-data/').theFileWithName('a-file').withContent('aaa');
 		havingInFolder('test-data/any').theFileWithName('c-file').withContent('ccc');
 		havingInFolder('test-data/').theFileWithName('b-file').withContent('bbb');
+		havingInFolder('test-data/.git').theFileWithName('d-file').withContent('ddd');
 
 		fileProvider('test-data/').files(function(array) {
 			filenames = array;
@@ -20,7 +22,7 @@ describe('Directory file provider', function() {
 		});
 	});
 	
-	it('takes sub-directories into account', function() {
+	it('takes sub-directories into account, ignoring .git', function() {
 		expect(filenames.length).toEqual(3);
 	});
 	

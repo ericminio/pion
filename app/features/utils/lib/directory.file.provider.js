@@ -14,7 +14,7 @@ var filesInFolder = function(folder) {
 				if (stats.isFile()) {
 					filenames.push(folder + file);
 				}
-				if (stats.isDirectory()) {
+				if (stats.isDirectory() && file !== '.git') {
 					filesInFolder(folder + file + '/').files(function(array) {
 						filenames = filenames.concat(array);
 					});
