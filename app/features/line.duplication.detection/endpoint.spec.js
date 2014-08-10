@@ -42,7 +42,7 @@ describe('Line duplication detection endpoint', function() {
                 var clean = require('../utils/lib/clean');
                 clean.folder('cloned/');	
                 var fs = require('fs');
-                fs.writeFileSync('./cloned/one-file', 'one line\none line');
+                fs.writeFileSync('./cloned/one-file.js', 'one line\none line');
                 afterClone(); 
             } 
         };
@@ -55,8 +55,8 @@ describe('Line duplication detection endpoint', function() {
                 { 
                     line: 'one line', 
                     occurences: [ 
-                        { file: './cloned/one-file', lineIndex: 0}, 
-                        { file: './cloned/one-file', lineIndex: 1 } 
+                        { file: './cloned/one-file.js', lineIndex: 0}, 
+                        { file: './cloned/one-file.js', lineIndex: 1 } 
                     ] 
                 } 
             ]

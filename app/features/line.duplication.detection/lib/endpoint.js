@@ -33,8 +33,9 @@ var endpoint = function(request, response, callback) {
         var fileProvider = require('../../utils/lib/directory.file.provider');
         var detectDuplications = require('./pion.lines');
         
-        detectDuplications.ignoring( all([javascript, node, jasmine, csharp, nunit, xml]) )
-                          .inFiles(fileProvider('./cloned/'), function(duplications) {
+        detectDuplications.ignoring( all([javascript, node, jasmine, csharp, nunit, xml]) )                          
+                          .inFiles(fileProvider('./cloned/').including([ /\.js$/, /\.cs$/ ])
+                                                            .excluding([ /\/bootstrap\.js$/ ]), function(duplications) {
             status.duplicationCount = duplications.length,
             status.duplications = duplications;
             response.write( JSON.stringify(status) );
