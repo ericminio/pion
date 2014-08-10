@@ -29,7 +29,7 @@ describe('Directory file provider', function() {
     
     it('ignores .git directory', function() {
         expect(filenames).not.toContain('test-data/.git/d-file.js');
-    })
+    });
 	
 	it('selects only the included extensions', function() {
 		expect(filenames).toEqual([ 'test-data/a-file.js', 'test-data/any/c-file.js', 'test-data/b-file.js', 'test-data/e-file.cs' ]);
