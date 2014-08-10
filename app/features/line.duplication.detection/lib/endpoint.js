@@ -1,3 +1,4 @@
+var clean = require('../../utils/lib/clean');
 var all = require('../../../../ignoring/ignoring');
 
 var javascript = require('../../../../ignoring/ignoring.javascript');
@@ -29,6 +30,7 @@ var endpoint = function(request, response, callback) {
         callback();
         return;
     }
+    clean.folder('./cloned');
     module.exports.cloner.clone(query.repository, './cloned', function(error) {
         if (error !== undefined) { 
             status.error = error;
@@ -41,6 +43,7 @@ var endpoint = function(request, response, callback) {
         var detectDuplications = require('./pion.lines');
         
         detectDuplications.inFiles(fileProvider('./cloned/'), function(duplications) {
+            status.duplicationCount = duplications.length,
             status.duplications = duplications;
             response.write( JSON.stringify(status) );
             callback();        

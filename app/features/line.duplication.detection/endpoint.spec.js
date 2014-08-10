@@ -50,6 +50,7 @@ describe('Line duplication detection endpoint', function() {
         spyOn(response, 'write');
         var status = {
             repository: 'any-repo',
+            duplicationCount: 1,
             duplications: [ 
                 { 
                     line: 'one line', 
