@@ -9,4 +9,14 @@ module.exports = [
 
     /using/,
     /namespace/,
+    
+    'EndGlobalSection',
+    
+    /ItemGroup/,
+    /Reference/,
+    /ConsolePause/,
+    /WarningLevel/,
+    /ErrorReport/,
+    /DebugType/,
+    /PropertyGroup/,
 ];

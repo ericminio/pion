@@ -6,6 +6,7 @@ var node = require('../../../../ignoring/ignoring.node');
 var jasmine = require('../../../../ignoring/ignoring.jasmine');
 var csharp = require('../../../../ignoring/ignoring.csharp');
 var nunit = require('../../../../ignoring/ignoring.nunit');
+var xml = require('../../../../ignoring/ignoring.xml');
 
 var endpoint = function(request, response, callback) {
     response.writeHead(200, {'Content-Type': 'application/json'});
@@ -32,7 +33,7 @@ var endpoint = function(request, response, callback) {
         var fileProvider = require('../../utils/lib/directory.file.provider');
         var detectDuplications = require('./pion.lines');
         
-        detectDuplications.ignoring( all([javascript, node, jasmine, csharp, nunit]) )
+        detectDuplications.ignoring( all([javascript, node, jasmine, csharp, nunit, xml]) )
                           .inFiles(fileProvider('./cloned/'), function(duplications) {
             status.duplicationCount = duplications.length,
             status.duplications = duplications;
