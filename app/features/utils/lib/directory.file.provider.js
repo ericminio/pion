@@ -8,6 +8,10 @@ var filesInFolder = function(folder) {
             this.inclusions = inclusions;
             return this;
         },
+        excluding: function(exclusions) {
+            this.exclusions = exclusions;
+            return this;
+        },
         
         weShouldIncludeThis: function(filename) {
             if (this.inclusions === undefined) { return true; }
@@ -19,6 +23,16 @@ var filesInFolder = function(folder) {
             return include;
         },
         
+        weShouldExcludedThis: function(filename) {
+            if (this.exclusions === undefined) { return false; }
+
+            var exclude = false;
+            array.forEach(this.exclusions, function(exclusion) {
+                exclude = exclude | exclusion.test(filename);
+            })
+            return exclude;
+        },
+        
 		files: function(callback) {
             var self = this;
 			var filenames = [];
@@ -27,11 +41,11 @@ var filesInFolder = function(folder) {
 			array.forEach(files, function(file) {
 				var stats = fs.statSync(folder + '/' + file);
 				
-				if (stats.isFile() && self.weShouldIncludeThis(file)) {
+				if (stats.isFile() && self.weShouldIncludeThis(file) && !self.weShouldExcludedThis(file)) {
 					filenames.push(folder + file);
 				}
 				if (stats.isDirectory() && file !== '.git') {
-					filesInFolder(folder + file + '/').including(self.inclusions).files(function(array) {
+					filesInFolder(folder + file + '/').including(self.inclusions).excluding(self.exclusions).files(function(array) {
 						filenames = filenames.concat(array);
 					});
 				}
