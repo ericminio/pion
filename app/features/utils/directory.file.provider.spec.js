@@ -11,27 +11,32 @@ describe('Directory file provider', function() {
 		clean.folder('test-data/');		
 		clean.folder('test-data/any');		
 		clean.folder('test-data/.git');		
-		havingInFolder('test-data/').theFileWithName('a-file').withContent('aaa');
-		havingInFolder('test-data/any').theFileWithName('c-file').withContent('ccc');
-		havingInFolder('test-data/').theFileWithName('b-file').withContent('bbb');
-		havingInFolder('test-data/.git').theFileWithName('d-file').withContent('ddd');
+		havingInFolder('test-data/').theFileWithName('a-file.js').withContent('aaa');
+		havingInFolder('test-data/any').theFileWithName('c-file.js').withContent('ccc');
+		havingInFolder('test-data/').theFileWithName('b-file.js').withContent('bbb');
+		havingInFolder('test-data/').theFileWithName('e-file.cs').withContent('eee');
 
-		fileProvider('test-data/').files(function(array) {
+		havingInFolder('test-data/').theFileWithName('g-filecs').withContent('eee');
+
+		havingInFolder('test-data/').theFileWithName('f-file.png').withContent('fff');
+		havingInFolder('test-data/.git').theFileWithName('d-file.js').withContent('ddd');
+
+		fileProvider('test-data/').including([ /\.js$/, /\.cs$/ ]).files(function(array) {
 			filenames = array;
 			done();
 		});
 	});
+    
+    it('ignores .git directory', function() {
+        expect(filenames).not.toContain('test-data/.git/d-file.js');
+    })
 	
-	it('takes sub-directories into account, ignoring .git', function() {
-		expect(filenames.length).toEqual(3);
-	});
-	
-	it('provides filenames with folder prefix', function() {
-		expect(filenames[1]).toEqual('test-data/any/c-file');
+	it('selects only the included extensions', function() {
+		expect(filenames).toEqual([ 'test-data/a-file.js', 'test-data/any/c-file.js', 'test-data/b-file.js', 'test-data/e-file.cs' ]);
 	});
 	
 	it('can provide the content of a file', function() {
-		expect(fileProvider().contentOf('test-data/any/c-file')).toEqual('ccc');
+		expect(fileProvider().contentOf('test-data/any/c-file.js')).toEqual('ccc');
 	});
 	
 });
