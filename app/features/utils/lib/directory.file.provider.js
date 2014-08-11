@@ -14,8 +14,6 @@ var filesInFolder = function(folder) {
         },
         
         weShouldIncludeThis: function(filename) {
-            if (this.inclusions === undefined) { return true; }
-            
             var include = false;
             array.forEach(this.inclusions, function(inclusion) {
                 include = include | inclusion.test(filename);
@@ -24,8 +22,6 @@ var filesInFolder = function(folder) {
         },
         
         weShouldExcludedThis: function(filename) {
-            if (this.exclusions === undefined) { return false; }
-
             var exclude = false;
             array.forEach(this.exclusions, function(exclusion) {
                 exclude = exclude | exclusion.test(filename);
