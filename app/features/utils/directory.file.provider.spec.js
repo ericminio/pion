@@ -19,9 +19,10 @@ describe('Directory file provider', function() {
 		havingInFolder('test-data/').theFileWithName('g-file.excluded.cs').withContent('eee');
 
 		havingInFolder('test-data/').theFileWithName('f-file.png').withContent('fff');
+		havingInFolder('test-data/').theFileWithName('bootstrap.js').withContent('fff');
 		havingInFolder('test-data/.git').theFileWithName('d-file.js').withContent('ddd');
 
-		fileProvider('test-data/').including([ /\.js$/, /\.cs$/ ]).excluding([ /excluded\.cs$/ ]).files(function(array) {
+		fileProvider('test-data/').including([ /\.js$/, /\.cs$/ ]).excluding([ /^bootstrap\.js$/, /excluded\.cs$/ ]).files(function(array) {
 			filenames = array;
 			done();
 		});
