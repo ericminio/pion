@@ -10,6 +10,7 @@ var xml = require('../../../../ignoring/ignoring.xml');
 var python = require('../../../../ignoring/ignoring.python');
 var nose = require('../../../../ignoring/ignoring.nose');
 var java = require('../../../../ignoring/ignoring.java');
+var ruby = require('../../../../ignoring/ignoring.ruby');
 
 var endpoint = function(request, response, callback) {
     response.writeHead(200, {'Content-Type': 'application/json'});
@@ -36,8 +37,8 @@ var endpoint = function(request, response, callback) {
         var fileProvider = require('../../utils/lib/directory.file.provider');
         var detectDuplications = require('./pion.lines');
         
-        detectDuplications.ignoring( all([javascript, node, jasmine, csharp, nunit, xml, python, nose, java]) )                          
-                          .inFiles(fileProvider('./cloned/').including([ /\.js$/, /\.cs$/, /\.py$/, /\.java$/ ])
+        detectDuplications.ignoring( all([javascript, node, jasmine, csharp, nunit, xml, python, nose, java, ruby]) )                          
+                          .inFiles(fileProvider('./cloned/').including([ /\.js$/, /\.cs$/, /\.py$/, /\.java$/, /\.rb$/ ])
                                                             .excluding([ /^bootstrap\.js$/ ]), function(duplications) {
             status.duplicationCount = duplications.length,
             status.duplications = duplications;
