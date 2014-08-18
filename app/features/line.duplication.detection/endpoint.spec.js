@@ -1,4 +1,7 @@
+delete require.cache[require.resolve('./lib/endpoint')];
 var endpoint = require('./lib/endpoint');
+var clean = require('../utils/lib/clean');
+var fs = require('fs');
 
 describe('Line duplication detection endpoint', function() {
     
@@ -39,10 +42,9 @@ describe('Line duplication detection endpoint', function() {
     it('searches duplications in the cloned repository', function(done) {
         var cloner = { 
             clone: function(repo, folder, afterClone) { 
-                var clean = require('../utils/lib/clean');
                 clean.folder('cloned/');	
-                var fs = require('fs');
                 fs.writeFileSync('./cloned/one-file.js', 'one line\none line');
+                
                 afterClone(); 
             } 
         };

@@ -41,7 +41,6 @@ describe('Running Pion is easy :).', function() {
             
             var fileProvider = require('./app/features/utils/lib/directory.file.provider');
             var detectDuplications = require('./app/features/block.duplication.detection/lib/pion.blocks');
-            detectDuplications.logger = require('./app/features/utils/lib/console.logger');
             detectDuplications.ignoring( all([javascript, node, jasmine, pion]) )
                               .inFiles(fileProvider(folder), function(duplications) {
                 console.log(JSON.stringify(duplications, null, 4));

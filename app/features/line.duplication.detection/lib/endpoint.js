@@ -12,6 +12,16 @@ var nose = require('../../../../ignoring/ignoring.nose');
 var java = require('../../../../ignoring/ignoring.java');
 var ruby = require('../../../../ignoring/ignoring.ruby');
 
+var fs = require('fs');
+var fileProvider = require('../../utils/lib/directory.file.provider');
+var detectDuplications = require('./pion.lines');
+
+var withError = function(error, status, response, callback) {
+    status.error = error;
+    response.write( JSON.stringify(status) );
+    callback();
+};
+
 var endpoint = function(request, response, callback) {
     response.writeHead(200, {'Content-Type': 'application/json'});
     
@@ -19,27 +29,34 @@ var endpoint = function(request, response, callback) {
     var status = {
         repository: query.repository,
     }
-    if (query.repository === undefined) {
-        status.error = 'missing repository parameter';
-        response.write( JSON.stringify(status) );
-        callback();
-        return;
-    }
+    if (query.repository === undefined) { return withError('missing repository parameter', status, response, callback); }
+
     clean.folder('./cloned');
     module.exports.cloner.clone(query.repository, './cloned', function(error) {
-        if (error !== undefined) { 
-            status.error = error;
-            response.write( JSON.stringify(status) );
-            callback(); 
-            return; 
-        }
+        if (error !== undefined) { return withError(error, status, response, callback); }
                 
-        var fileProvider = require('../../utils/lib/directory.file.provider');
-        var detectDuplications = require('./pion.lines');
+        var specificPatternToIgnore = [];
+        var includingFilenamesMatching = [ /\.js$/, /\.cs$/, /\.py$/, /\.java$/, /\.rb$/ ];
+        var excludingFilenamesMatching = [ /^bootstrap\.js$/ ];
+
+        if (fs.existsSync('./cloned/pion.json')) {
+            var pionJson = fs.readFileSync('./cloned/pion.json').toString();
+            
+            try {
+                var pionConfig = JSON.parse(pionJson);
+                if (! Array.isArray(pionConfig.ignoringLinesMatching)) { 
+                    return withError('missing array ignoringLinesMatching in pion.json', status, response, callback); 
+                }
+
+                specificPatternToIgnore = pionConfig.ignoringLinesMatching;
+            }
+            catch (Exception) { return withError('mal-formed pion.json', status, response, callback); }                        
+        }        
+        var allPatternsToIgnore = all([javascript, node, jasmine, csharp, nunit, xml, python, nose, java, ruby, specificPatternToIgnore]);                                             
+        var clonedRepository = fileProvider('./cloned/').including(includingFilenamesMatching).excluding(excludingFilenamesMatching);
         
-        detectDuplications.ignoring( all([javascript, node, jasmine, csharp, nunit, xml, python, nose, java, ruby]) )                          
-                          .inFiles(fileProvider('./cloned/').including([ /\.js$/, /\.cs$/, /\.py$/, /\.java$/, /\.rb$/ ])
-                                                            .excluding([ /^bootstrap\.js$/ ]), function(duplications) {
+        detectDuplications.ignoring(allPatternsToIgnore)                          
+                          .inFiles(clonedRepository, function(duplications) {
             status.duplicationCount = duplications.length,
             status.duplications = duplications;
             response.write( JSON.stringify(status) );
